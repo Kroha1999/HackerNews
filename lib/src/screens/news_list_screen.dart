@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
-class NewsList extends StatelessWidget {
+import '../widgets/news_list.dart';
+import '../blocs/stories_provider.dart';
+
+class NewsListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -9,7 +12,7 @@ class NewsList extends StatelessWidget {
           'The hackerNews',
         ),
       ),
-      body: Container(),
+      body: NewsList(),
     );
   }
 }

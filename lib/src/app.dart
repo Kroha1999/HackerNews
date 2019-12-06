@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'screens/news_list.dart';
+
+import 'screens/news_list_screen.dart';
 import 'blocs/stories_provider.dart';
 
 class App extends StatelessWidget {
@@ -11,7 +12,7 @@ class App extends StatelessWidget {
           primaryColor: Colors.brown,
         ),
         title: "Hacker News",
-        home: NewsList(),
+        home: NewsListScreen(),
       ),
     );
   }
