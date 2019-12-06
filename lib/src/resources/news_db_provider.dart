@@ -6,11 +6,16 @@ import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 
 import '../models/item_model.dart';
+import 'data_provider.dart';
 
-class NewsDbProvider {
+class NewsDbProvider implements Source, Cache {
   Database db;
 
-  init() async {
+  NewsDbProvider() {
+    init();
+  }
+
+  void init() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     final path = join(documentsDirectory.path, "items.db");
     db = await openDatabase(
@@ -41,6 +46,11 @@ class NewsDbProvider {
     );
   }
 
+  // TODO: store TopIds
+  Future<List<int>> fetchTopIds() {
+    return null;
+  }
+
   Future<ItemModel> fetchItem(int id) async {
     final maps = await db.query(
       "Items",
@@ -56,7 +66,10 @@ class NewsDbProvider {
     return null;
   }
 
-  addItem(ItemModel item) {
+  Future<int> addItem(ItemModel item) {
     return db.insert("Items", item.toMapDb());
   }
 }
+
+// The only instance of news Db in order not to create multiple instances of NewsDbProvider
+final newsDbProvider = NewsDbProvider();
