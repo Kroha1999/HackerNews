@@ -10,6 +10,7 @@ class App extends StatelessWidget {
       child: MaterialApp(
         theme: ThemeData(
           primaryColor: Colors.brown,
+          fontFamily: "OpenSans"
         ),
         title: "Hacker News",
         home: NewsListScreen(),

@@ -70,7 +70,6 @@ class NewsDbProvider implements Source, Cache {
     return db.insert(
       "Items",
       item.toMapDb(),
-      // conflictAlgorithm: ConflictAlgorithm.ignore,
     );
   }
 }

@@ -17,19 +17,19 @@ class ItemModel {
 
   // Must redefine null values as DB is not accepting nulls  
   ItemModel.fromJson(Map<String, dynamic> parsedJson)
-      : id = parsedJson['id'],
+      : id = parsedJson['id'] ?? '',
         deleted = parsedJson['deleted'] ?? false,
-        type = parsedJson['type'],
-        by = parsedJson['by'],
-        time = parsedJson['time'],
+        type = parsedJson['type'] ?? '',
+        by = parsedJson['by'] ?? '',
+        time = parsedJson['time'] ?? 0,
         text = parsedJson['text'] ?? '',
         dead = parsedJson['dead'] ?? false,
-        parent = parsedJson['parent'],
+        parent = parsedJson['parent'] ?? 0,
         kids = parsedJson['kids'] ?? [],
-        url = parsedJson['url'],
-        score = parsedJson['score'],
-        title = parsedJson['title'],
-        descendants = parsedJson['descendants'];
+        url = parsedJson['url'] ?? '',
+        score = parsedJson['score'] ?? 0,
+        title = parsedJson['title'] ?? '',
+        descendants = parsedJson['descendants'] ?? 0;
 
   ItemModel.fromDb(Map<String, dynamic> parsedJson)
       : id = parsedJson['id'],
