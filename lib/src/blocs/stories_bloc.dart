@@ -28,6 +28,10 @@ class StoriesBloc {
     _topIds.sink.add(ids);
   }
 
+  clearCache() async {
+    _repository.clearCache();
+  }
+
   StoriesBloc() {
     // This constructor is needed for transforming stream and
     // to have the only one "cahce" instance from the transformer
@@ -42,7 +46,6 @@ class StoriesBloc {
     // index - number of ScanStreamTransformer was called
     return ScanStreamTransformer(
       (Map<int, Future<ItemModel>> cache, int id, index) {
-        print(index);
         cache[id] = _repository.fetchItem(id);
         return cache;
       },

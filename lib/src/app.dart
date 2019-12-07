@@ -9,7 +9,8 @@ class App extends StatelessWidget {
     return StoriesProvider(
       child: MaterialApp(
         theme: ThemeData(
-          primaryColor: Colors.brown,
+          primarySwatch: Colors.teal,
+          // primaryColor: Colors.brown,
           fontFamily: "OpenSans"
         ),
         title: "Hacker News",

@@ -7,4 +7,5 @@ abstract class Source {
 
 abstract class Cache {
   addItem(ItemModel item);
+  Future<int> clear();
 }

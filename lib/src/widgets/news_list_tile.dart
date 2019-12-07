@@ -34,7 +34,9 @@ class NewsListTile extends StatelessWidget {
                       item.title,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 2,
-                      style: TextStyle(fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     subtitle: Row(
                       children: <Widget>[
@@ -48,7 +50,10 @@ class NewsListTile extends StatelessWidget {
                     ),
                     trailing: Column(
                       children: <Widget>[
-                        Icon(Icons.comment),
+                        Icon(
+                          Icons.comment,
+                          color: Colors.teal,
+                        ),
                         Text("${item.descendants}"),
                       ],
                     ),

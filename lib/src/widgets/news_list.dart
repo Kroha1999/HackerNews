@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:hacker_news/src/blocs/stories_provider.dart';
-import 'package:hacker_news/src/widgets/news_list_tile.dart';
+
+import '../blocs/stories_provider.dart';
+import 'news_list_tile.dart';
+import 'refresh_indicator.dart';
 
 class NewsList extends StatelessWidget {
   @override
@@ -22,15 +24,17 @@ class NewsList extends StatelessWidget {
             ),
           );
         }
-        
-        return ListView.builder(
-          itemCount: snapshot.data.length,
-          itemBuilder: (context, int index) {
-            // Fetches data for each separate item
-            bloc.fetchItem(snapshot.data[index]);
-            // Returns a NewsListItem
-            return NewsListTile(itemId: snapshot.data[index]);
-          },
+
+        return Refresh(
+          ListView.builder(
+            itemCount: snapshot.data.length,
+            itemBuilder: (context, int index) {
+              // Fetches data for each separate item
+              bloc.fetchItem(snapshot.data[index]);
+              // Returns a NewsListItem
+              return NewsListTile(itemId: snapshot.data[index]);
+            },
+          ),
         );
       },
     );
