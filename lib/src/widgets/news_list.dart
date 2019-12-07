@@ -9,9 +9,6 @@ class NewsList extends StatelessWidget {
   Widget build(BuildContext context) {
     final bloc = StoriesProvider.of(context);
 
-    //DON'T DO SO -> TODO: CHANGE LATER
-    bloc.fetchTopIds();
-
     return StreamBuilder(
       stream: bloc.topIds,
       builder: (context, AsyncSnapshot<List<int>> snapshot) {

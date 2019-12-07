@@ -3,29 +3,35 @@ import 'package:flutter/material.dart';
 import 'screens/news_list_screen.dart';
 import 'screens/news_details.dart';
 import 'blocs/stories_provider.dart';
+import 'blocs/comments_provider.dart';
 
 class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoriesProvider(
-      child: MaterialApp(
-        theme: ThemeData(
-          primarySwatch: Colors.teal,
-          fontFamily: "OpenSans",
+      child: CommentsProvider(
+        child: MaterialApp(
+          theme: ThemeData(
+            primarySwatch: Colors.teal,
+            fontFamily: "OpenSans",
+          ),
+          title: "Hacker News",
+          onGenerateRoute: routes,
         ),
-        title: "Hacker News",
-        onGenerateRoute: routes,
       ),
     );
   }
 
   Route routes(RouteSettings settings) {
     if (settings.name.length > 6) {
-      //NewsDetails route
+      //NewsDetails route with specific [id]
       if (settings.name.substring(0, 6) == '/news/') {
-        final id = int.parse(settings.name.substring(6));
         return MaterialPageRoute(
           builder: (context) {
+            final id = int.parse(settings.name.substring(6));
+            final commentsBloc = CommentsProvider.of(context);
+            // Fetches data for specific item
+            commentsBloc.fetchItemWithComments(id);
             return NewsDetails(itemId: id);
           },
         );
@@ -33,6 +39,8 @@ class App extends StatelessWidget {
     }
     //default route '/'
     return MaterialPageRoute(builder: (context) {
+      final storiesBloc = StoriesProvider.of(context);
+      storiesBloc.fetchTopIds();
       return NewsListScreen();
     });
   }
