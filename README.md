@@ -2,4 +2,5 @@
 
 Just another client for HackerNews service.
 
-![news_list](screenshots/flutter_01.png =250x)
+<img src="screenshots/flutter_01.png" alt="drawing" width="200"/>
+
