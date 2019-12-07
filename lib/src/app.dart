@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'screens/news_list_screen.dart';
-import 'screens/news_details.dart';
+import 'screens/news_details_screen.dart';
 import 'blocs/stories_provider.dart';
 import 'blocs/comments_provider.dart';
 
@@ -32,7 +32,7 @@ class App extends StatelessWidget {
             final commentsBloc = CommentsProvider.of(context);
             // Fetches data for specific item
             commentsBloc.fetchItemWithComments(id);
-            return NewsDetails(itemId: id);
+            return NewsDetailsScreen(itemId: id);
           },
         );
       }

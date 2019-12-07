@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../blocs/stories_provider.dart';
+import '../../blocs/stories_provider.dart';
 import 'news_list_tile.dart';
 import 'refresh_indicator.dart';
 

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:hacker_news/src/widgets/loading_list_tile.dart';
 
-import '../blocs/stories_provider.dart';
-import '../models/item_model.dart';
+
+import '../../blocs/stories_provider.dart';
+import '../../models/item_model.dart';
+import 'loading_list_tile.dart';
 
 class NewsListTile extends StatelessWidget {
   final int itemId;

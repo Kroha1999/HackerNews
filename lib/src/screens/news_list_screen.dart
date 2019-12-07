@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../widgets/news_list.dart';
+import '../widgets/news_list/news_list.dart';
 
 class NewsListScreen extends StatelessWidget {
   @override
