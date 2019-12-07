@@ -2,4 +2,4 @@
 
 Just another client for HackerNews service.
 
-![news_list](screenshots/flutter_01.png)
+![news_list](screenshots/flutter_01.png =250x)
