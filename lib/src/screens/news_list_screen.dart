@@ -5,52 +5,84 @@ import '../blocs/stories_provider.dart';
 import '../widgets/news_list/news_list.dart';
 
 class NewsListScreen extends StatefulWidget {
+  final StoriesBloc _bloc;
+  // Bloc is passed as a parameter for 2 reasons:
+  // 1. On passing bloc through provider we can use 
+  //    it only at build function which leads to longer
+  //    initial loading time
+  // 2. On returning from a NewsDetails screen it will 
+  //    show proper page results (previoselly showed top
+  //    stories results, as bloc was predefined onPageRouteGen
+  //    calling fetchListIds for top stories)
+  NewsListScreen(this._bloc);
+  
   @override
   _NewsListScreenState createState() => _NewsListScreenState();
 }
 
-class _NewsListScreenState extends State<NewsListScreen> with SingleTickerProviderStateMixin{
-
+class _NewsListScreenState extends State<NewsListScreen>
+    with SingleTickerProviderStateMixin {
   TabController _controller;
-  StoriesBloc _bloc;
+  ScrollController _scrollController;
   @override
   void initState() {
-    super.initState();
-    _controller = TabController(length: 3,vsync: this);
+    widget._bloc.fetchListIds(TypeOfList.TopStories);
+    _scrollController = ScrollController();
+    _controller = TabController(length: 6, vsync: this);
     _controller.addListener(_tabSwitch);
+    super.initState();
   }
 
-  _tabSwitch(){
-    if(_controller.index == 0) _bloc.fetchListIds(TypeOfList.TopStories);
-    if(_controller.index == 1) _bloc.fetchListIds(TypeOfList.NewStories);
-    if(_controller.index == 2) _bloc.fetchListIds(TypeOfList.BestStories);
+  _tabSwitch() {
+    widget._bloc.fetchListIds(TypeOfList.values[_controller.index]);
   }
 
   @override
   Widget build(BuildContext context) {
-    _bloc = StoriesProvider.of(context);
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'The hackerNews',
-        ),
-        bottom: TabBar(
+      body: NestedScrollView(
+        controller: _scrollController,
+        headerSliverBuilder: (context, bool isScrolled) {
+          return <Widget>[
+            SliverAppBar(
+              title: Text("The hackerNews"),
+              pinned: true,
+              floating: true,
+              forceElevated: isScrolled,
+              bottom: TabBar(
+                isScrollable: true,
+                controller: _controller,
+                tabs: <Widget>[
+                  Tab(child: Text("top")),
+                  Tab(child: Text("new")),
+                  Tab(child: Text("best")),
+                  Tab(child: Text("ask")),
+                  Tab(child: Text("show")),
+                  Tab(child: Text("job")),
+                ],
+              ),
+            ),
+          ];
+        },
+        body: TabBarView(
           controller: _controller,
-          tabs: <Widget>[
-            Tab(child: Text("top")),
-            Tab(child: Text("new")),
-            Tab(child: Text("best")),
+          children: <Widget>[
+            NewsList(TypeOfList.TopStories),
+            NewsList(TypeOfList.NewStories),
+            NewsList(TypeOfList.BestStories),
+            NewsList(TypeOfList.AskStories),
+            NewsList(TypeOfList.ShowStories),
+            NewsList(TypeOfList.JobStories),
           ],
         ),
       ),
-      body: TabBarView(
-        controller: _controller,
-        children: <Widget>[
-          NewsList(TypeOfList.TopStories),
-          NewsList(TypeOfList.NewStories),
-          NewsList(TypeOfList.BestStories),
-        ],
-      )
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _scrollController.dispose();
+    _controller.dispose();
   }
 }

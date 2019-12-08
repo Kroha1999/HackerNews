@@ -24,6 +24,15 @@ class NewsApiProvider implements Source {
       case TypeOfList.BestStories:
         endpoint = "beststories.json";
         break;
+      case TypeOfList.AskStories:
+        endpoint = "askstories.json";
+        break;
+      case TypeOfList.ShowStories:
+        endpoint = "showstories.json";
+        break;
+      case TypeOfList.JobStories:
+        endpoint = "jobstories.json";
+        break;
       default: 
         endpoint = "topstories.json";
     }
