@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 
+import '../../resources/list_type.dart';
 import '../../blocs/stories_provider.dart';
 import 'news_list_tile.dart';
 import 'refresh_indicator.dart';
 
 class NewsList extends StatelessWidget {
+  TypeOfList type;
+  NewsList(this.type);
   @override
   Widget build(BuildContext context) {
     final bloc = StoriesProvider.of(context);
@@ -32,6 +35,7 @@ class NewsList extends StatelessWidget {
               return NewsListTile(itemId: snapshot.data[index]);
             },
           ),
+          type: type,
         );
       },
     );

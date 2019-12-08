@@ -47,7 +47,7 @@ class NewsDbProvider implements Source, Cache {
   }
 
   // TODO: store TopIds
-  Future<List<int>> fetchTopIds() {
+  Future<List<int>> fetchListIds(type) {
     return null;
   }
 

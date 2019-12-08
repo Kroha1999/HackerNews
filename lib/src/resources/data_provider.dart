@@ -1,7 +1,8 @@
-import 'package:hacker_news/src/models/item_model.dart';
+import '../models/item_model.dart';
+import 'list_type.dart';
 
 abstract class Source {
-  Future<List<int>> fetchTopIds();
+  Future<List<int>> fetchListIds(TypeOfList type);
   Future<ItemModel> fetchItem(int id);
 }
 

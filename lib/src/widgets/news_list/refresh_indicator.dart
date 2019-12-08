@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:hacker_news/src/blocs/stories_provider.dart';
+
+import '../../blocs/stories_provider.dart';
+import '../../resources/list_type.dart';
 
 class Refresh extends StatelessWidget {
   final Widget child;
-  Refresh(this.child);
+  final TypeOfList type;
+  Refresh(this.child, {@required this.type});
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +15,7 @@ class Refresh extends StatelessWidget {
       child: child,
       onRefresh: () async {
         await bloc.clearCache();
-        bloc.fetchTopIds();
+        bloc.fetchListIds(type);
       },
     );
   }

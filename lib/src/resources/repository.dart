@@ -1,10 +1,12 @@
 import 'dart:async';
 
-import 'package:hacker_news/src/resources/data_provider.dart';
-
+import 'data_provider.dart';
+import 'list_type.dart';
 import 'news_api_provider.dart';
 import 'news_db_provider.dart';
 import '../models/item_model.dart';
+
+export 'list_type.dart';
 
 class Repository {
   List<Source> sources = <Source>[
@@ -18,8 +20,8 @@ class Repository {
 
   // TODO: Iterate throught sources and fetch top Ids
   // Implement Db source
-  Future<List<int>> fetchTopIds() async {
-    return sources[1].fetchTopIds();
+  Future<List<int>> fetchListIds(TypeOfList type) async {
+    return sources[1].fetchListIds(type);
   }
 
   Future<ItemModel> fetchItem(int id) async {

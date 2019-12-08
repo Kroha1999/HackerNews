@@ -4,6 +4,7 @@ import 'screens/news_list_screen.dart';
 import 'screens/news_details_screen.dart';
 import 'blocs/stories_provider.dart';
 import 'blocs/comments_provider.dart';
+import 'resources/list_type.dart';
 
 class App extends StatelessWidget {
   @override
@@ -40,7 +41,8 @@ class App extends StatelessWidget {
     //default route '/'
     return MaterialPageRoute(builder: (context) {
       final storiesBloc = StoriesProvider.of(context);
-      storiesBloc.fetchTopIds();
+      // initial page stories fetch
+      storiesBloc.fetchListIds(TypeOfList.TopStories);
       return NewsListScreen();
     });
   }

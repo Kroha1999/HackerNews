@@ -1,4 +1,5 @@
 import 'package:hacker_news/src/models/item_model.dart';
+import 'package:hacker_news/src/resources/list_type.dart';
 import "package:hacker_news/src/resources/news_api_provider.dart";
 import 'dart:convert';
 import 'package:test/test.dart';
@@ -17,7 +18,7 @@ void main() {
       );
     });
 
-    final ids = await newsApi.fetchTopIds();
+    final ids = await newsApi.fetchListIds(TypeOfList.BestStories);
 
     expect(ids, testArray);
   });

@@ -23,8 +23,8 @@ class StoriesBloc {
   // Getters to Sinks
   get fetchItem => _itemsFetcher.sink.add;
 
-  fetchTopIds() async {
-    final ids = await _repository.fetchTopIds();
+  fetchListIds(TypeOfList type) async {
+    final ids = await _repository.fetchListIds(type);
     _topIds.sink.add(ids);
   }
 
