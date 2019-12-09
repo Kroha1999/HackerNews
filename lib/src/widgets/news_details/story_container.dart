@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:hacker_news/src/models/item_model.dart';
 
-class NewsContainer extends StatelessWidget {
+import '../../mixins/url_mixin.dart';
+import '../../models/item_model.dart';
+
+class NewsContainer extends StatelessWidget with UrlMixin {
   final ItemModel item;
   NewsContainer({@required this.item});
 
@@ -22,6 +24,34 @@ class NewsContainer extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
+          ),
+          // Link (if present)
+          Column(
+            children: item.url == "" || item.url == null
+                ? <Widget>[]
+                : <Widget>[
+                    IconButton(
+                      iconSize: 50,
+                      icon: Icon(Icons.launch),
+                      onPressed: () => launchURL(item.url),
+                    ),
+                    Center(
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                          left: 30,
+                          right: 30,
+                          bottom: 10,
+                          top: 0,
+                        ),
+                        child: Text(
+                          "${item.url}",
+                          style: TextStyle(fontSize: 12, color: Colors.grey),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ),
+                  ],
           ),
           //Bottom line
           Row(

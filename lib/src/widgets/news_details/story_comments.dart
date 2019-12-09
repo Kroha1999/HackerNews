@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:url_launcher/url_launcher.dart';
 
-
+import '../../mixins/url_mixin.dart';
 import '../../models/item_model.dart';
 import '../news_list/loading_list_tile.dart';
 
-class Comment extends StatelessWidget {
+class Comment extends StatelessWidget with UrlMixin {
   final Map<int, Future<ItemModel>> map;
   final int commentId;
   // Moves child comments depending on it's indent (0 - parent comment)
@@ -30,11 +29,14 @@ class Comment extends StatelessWidget {
             ),
             title: Html(
               data: item.text,
-              onLinkTap: (link)=>_launchURL(link),
+              onLinkTap: (link) => launchURL(link),
             ),
             subtitle: item.by == '' ? Text("Deleted") : Text('by: ${item.by}'),
           ),
-          Divider(height: 4,thickness: 1,),
+          Divider(
+            height: 4,
+            thickness: 1,
+          ),
         ];
         // Builing subcomments
         for (int comId in snapshot.data.kids) {
@@ -50,12 +52,4 @@ class Comment extends StatelessWidget {
       },
     );
   }
-
-  _launchURL(String url) async {
-  if (await canLaunch(url)) {
-    await launch(url);
-  } else {
-    throw 'Could not launch $url';
-  }
-}
 }

@@ -6,7 +6,7 @@ import 'news_list_tile.dart';
 import 'refresh_indicator.dart';
 
 class NewsList extends StatelessWidget {
-  TypeOfList type;
+  final TypeOfList type;
   NewsList(this.type);
   @override
   Widget build(BuildContext context) {
