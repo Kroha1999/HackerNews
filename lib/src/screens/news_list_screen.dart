@@ -64,16 +64,19 @@ class _NewsListScreenState extends State<NewsListScreen>
             ),
           ];
         },
-        body: TabBarView(
-          controller: _controller,
-          children: <Widget>[
-            NewsList(TypeOfList.TopStories),
-            NewsList(TypeOfList.NewStories),
-            NewsList(TypeOfList.BestStories),
-            NewsList(TypeOfList.AskStories),
-            NewsList(TypeOfList.ShowStories),
-            NewsList(TypeOfList.JobStories),
-          ],
+        body: Container(
+          color: Colors.grey[50],
+          child: TabBarView(
+            controller: _controller,
+            children: <Widget>[
+              NewsList(TypeOfList.TopStories),
+              NewsList(TypeOfList.NewStories),
+              NewsList(TypeOfList.BestStories),
+              NewsList(TypeOfList.AskStories),
+              NewsList(TypeOfList.ShowStories),
+              NewsList(TypeOfList.JobStories),
+            ],
+          ),
         ),
       ),
     );

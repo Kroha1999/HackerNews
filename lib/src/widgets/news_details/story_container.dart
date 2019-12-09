@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:outline_material_icons/outline_material_icons.dart';
 
 import '../../mixins/url_mixin.dart';
 import '../../mixins/date_mixin.dart';
@@ -64,14 +65,21 @@ class NewsContainer extends StatelessWidget with UrlMixin, DateMixin {
                 style: TextStyle(color: Colors.grey),
               ),
               Expanded(child: Container()),
-              Icon(
-                Icons.favorite,
-                color: Colors.red,
-              ),
+              item.score < 100
+                  ? Icon(
+                      Icons.ac_unit,
+                      color: Colors.blue,
+                      size: 22,
+                    )
+                  : Icon(
+                      OMIcons.whatshot,
+                      color: item.score < 200 ? Colors.orange : Colors.red,
+                      size: 22,
+                    ),
               Text('${item.score}'),
               Padding(padding: EdgeInsets.only(right: 5)),
               Icon(
-                Icons.comment,
+                OMIcons.forum,
                 color: Colors.teal,
               ),
               Text('${item.descendants}'),

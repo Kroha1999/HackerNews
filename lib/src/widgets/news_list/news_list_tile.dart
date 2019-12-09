@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:hacker_news/src/mixins/date_mixin.dart';
+import 'package:outline_material_icons/outline_material_icons.dart';
 
+import '../../mixins/date_mixin.dart';
 import '../../blocs/stories_provider.dart';
 import '../../models/item_model.dart';
 import 'loading_list_tile.dart';
@@ -27,46 +28,81 @@ class NewsListTile extends StatelessWidget with DateMixin {
             }
             ItemModel item = itemSnapshot.data;
             // UI represantation
-            return Material(
-              child: Column(
-                children: <Widget>[
-                  ListTile(
-                    title: Text(
-                      item.title,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 2,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                    subtitle: Row(
-                      children: <Widget>[
-                        Icon(
-                          Icons.favorite,
-                          color: Colors.red,
-                          size: 16,
-                        ),
-                        Text("${item.score}"),
-                        Expanded(child: Container()),
-                        Text(
-                          "${timeAgo(item.time)}",
-                          style: TextStyle(color: Colors.grey),
-                        ),
-                        Expanded(child: Container()),
-                        Text("${item.descendants}"),
-                        Icon(
-                          Icons.comment,
-                          color: Colors.teal,
-                          size: 16,
-                        ),
-                      ],
-                    ),
-                    onTap: () {
-                      Navigator.pushNamed(context, '/news/$itemId');
-                    },
+            return Card(
+              margin: EdgeInsets.only(
+                left: 5,
+                right: 5,
+                bottom: 5,
+              ),
+              elevation: 2.5,
+              child: ListTile(
+                title: Container(
+                  child: Text(
+                    item.title,
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 3,
+                    style: TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  Divider(
-                    height: 8,
+                ),
+                // Likes and Comments count
+                trailing: Container(
+                  width: 65,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: <Widget>[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text("${item.score}"),
+                          item.score < 100
+                              ? Icon(
+                                  Icons.ac_unit,
+                                  color: Colors.blue,
+                                  size: 22,
+                                )
+                              : Icon(
+                                  OMIcons.whatshot,
+                                  color: item.score < 200
+                                    ? Colors.orange
+                                    : Colors.red,
+                                  size: 22,
+                                ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text("${item.descendants}"),
+                          Icon(
+                            OMIcons.forum,
+                            color: Colors.teal,
+                            size: 22,
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-                ],
+                ),
+                // Author and time
+                subtitle: Row(
+                  children: <Widget>[
+                    Text(
+                      "by: ${item.by}",
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                    Text(
+                      " ~ ${timeAgo(item.time)}",
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                    Expanded(child: Container()),
+                  ],
+                ),
+                onTap: () {
+                  Navigator.pushNamed(context, '/news/$itemId');
+                },
               ),
             );
           },
