@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../../mixins/url_mixin.dart';
+import '../../mixins/date_mixin.dart';
 import '../../models/item_model.dart';
 
-class NewsContainer extends StatelessWidget with UrlMixin {
+class NewsContainer extends StatelessWidget with UrlMixin, DateMixin {
   final ItemModel item;
   NewsContainer({@required this.item});
 
@@ -56,35 +57,25 @@ class NewsContainer extends StatelessWidget with UrlMixin {
           //Bottom line
           Row(
             children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(
-                  left: 10,
-                ),
-              ),
+              Padding(padding: EdgeInsets.only(left: 10)),
               Text("by: ${item.by}"),
-              Expanded(
-                child: Container(),
+              Text(
+                " ~ ${timeAgo(item.time)}",
+                style: TextStyle(color: Colors.grey),
               ),
+              Expanded(child: Container()),
               Icon(
                 Icons.favorite,
                 color: Colors.red,
               ),
               Text('${item.score}'),
-              Padding(
-                padding: EdgeInsets.only(
-                  right: 5,
-                ),
-              ),
+              Padding(padding: EdgeInsets.only(right: 5)),
               Icon(
                 Icons.comment,
                 color: Colors.teal,
               ),
               Text('${item.descendants}'),
-              Padding(
-                padding: EdgeInsets.only(
-                  right: 10,
-                ),
-              ),
+              Padding(padding: EdgeInsets.only(right: 10)),
             ],
           ),
         ],

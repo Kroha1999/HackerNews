@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 
+import '../../mixins/date_mixin.dart';
 import '../../mixins/url_mixin.dart';
 import '../../models/item_model.dart';
 import '../news_list/loading_list_tile.dart';
 
-class Comment extends StatelessWidget with UrlMixin {
+class Comment extends StatelessWidget with UrlMixin,DateMixin {
   final Map<int, Future<ItemModel>> map;
   final int commentId;
   // Moves child comments depending on it's indent (0 - parent comment)
@@ -31,7 +32,12 @@ class Comment extends StatelessWidget with UrlMixin {
               data: item.text,
               onLinkTap: (link) => launchURL(link),
             ),
-            subtitle: item.by == '' ? Text("Deleted") : Text('by: ${item.by}'),
+            subtitle: item.by == ''
+                ? Text("Deleted")
+                : Row(children: <Widget>[
+                    Text('by: ${item.by}'),
+                    Text(' ~ ${timeAgo(item.time)}'),
+                  ]),
           ),
           Divider(
             height: 4,

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-
+import 'package:hacker_news/src/mixins/date_mixin.dart';
 
 import '../../blocs/stories_provider.dart';
 import '../../models/item_model.dart';
 import 'loading_list_tile.dart';
 
-class NewsListTile extends StatelessWidget {
+class NewsListTile extends StatelessWidget with DateMixin {
   final int itemId;
   NewsListTile({this.itemId});
 
@@ -35,9 +35,7 @@ class NewsListTile extends StatelessWidget {
                       item.title,
                       overflow: TextOverflow.ellipsis,
                       maxLines: 2,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                     subtitle: Row(
                       children: <Widget>[
@@ -47,18 +45,21 @@ class NewsListTile extends StatelessWidget {
                           size: 16,
                         ),
                         Text("${item.score}"),
-                        // Padding(padding: EdgeInsets.only(left: (7 - "${item.score}".length)*10.0) ,),
-                        Expanded(child: Container(),),
+                        Expanded(child: Container()),
+                        Text(
+                          "${timeAgo(item.time)}",
+                          style: TextStyle(color: Colors.grey),
+                        ),
+                        Expanded(child: Container()),
                         Text("${item.descendants}"),
                         Icon(
                           Icons.comment,
                           color: Colors.teal,
                           size: 16,
                         ),
-                        
                       ],
                     ),
-                    onTap: (){
+                    onTap: () {
                       Navigator.pushNamed(context, '/news/$itemId');
                     },
                   ),
