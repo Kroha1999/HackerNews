@@ -28,86 +28,122 @@ class NewsListTile extends StatelessWidget with DateMixin {
             }
             ItemModel item = itemSnapshot.data;
             // UI represantation
-            return Card(
-              margin: EdgeInsets.only(
-                left: 5,
-                right: 5,
-                bottom: 5,
-              ),
-              elevation: 2.5,
-              child: ListTile(
-                title: Container(
-                  child: Text(
+            return buildWidget(item, context);
+          },
+        );
+      },
+    );
+  }
+
+  Widget buildWidget(ItemModel item, context) {
+    return Card(
+      key: Key(item.id.toString()),
+      margin: EdgeInsets.only(
+        left: 8,
+        right: 8,
+        bottom: 10,
+      ),
+      elevation: 2.5,
+      child: Column(
+        children: <Widget>[
+          GestureDetector(
+            onTap: () => Navigator.pushNamed(context, '/news/$itemId'),
+            child: Container(
+              alignment: Alignment.centerLeft,
+              padding: EdgeInsets.fromLTRB(10, 8, 10, 8),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  // Title
+                  Text(
                     item.title,
                     overflow: TextOverflow.ellipsis,
-                    maxLines: 3,
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    maxLines: 2,
+                    textAlign: TextAlign.left,
+                    style: TextStyle(fontSize: 22),
                   ),
+                  // Time ago
+                  Text(
+                    "${timeAgo(item.time)}",
+                    textAlign: TextAlign.end,
+                    style: TextStyle(
+                      color: Colors.grey[400],
+                      fontSize: 12,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Divider(
+            height: 4,
+            thickness: 0.6,
+          ),
+          Container(
+            padding: EdgeInsets.fromLTRB(10, 2, 10, 2),
+            height: 30,
+            child: Row(
+              children: <Widget>[
+                // Author
+                Text(
+                  "By: ${item.by}",
+                  style: TextStyle(color: Colors.grey[700]),
                 ),
-                // Likes and Comments count
-                trailing: Container(
-                  width: 65,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text("${item.score}"),
-                          item.score < 100
-                              ? Icon(
-                                  Icons.ac_unit,
-                                  color: Colors.blue,
-                                  size: 22,
-                                )
-                              : Icon(
-                                  OMIcons.whatshot,
-                                  color: item.score < 200
-                                    ? Colors.orange
-                                    : Colors.red,
-                                  size: 22,
-                                ),
-                        ],
+                Expanded(child: Container()),
+                // Comments count
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Text(
+                      "${item.score}",
+                      style: TextStyle(
+                        fontFamily: "OpenSans",
+                        color: Colors.grey[700],
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text("${item.descendants}"),
-                          Icon(
-                            OMIcons.forum,
-                            color: Colors.teal,
-                            size: 22,
+                    ),
+                    item.score < 100
+                        ? Icon(
+                            Icons.ac_unit,
+                            color: Colors.blue,
+                            size: 20,
+                          )
+                        : Icon(
+                            OMIcons.whatshot,
+                            color:
+                                item.score < 200 ? Colors.orange : Colors.red,
+                            size: 20,
                           ),
-                        ],
+                  ],
+                ),
+                // Comments count
+                Container(
+                  width: 55,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        "${item.descendants}",
+                        style: TextStyle(
+                          fontFamily: "OpenSans",
+                          color: Colors.grey[700],
+                        ),
+                      ),
+                      Icon(
+                        OMIcons.forum,
+                        color: Colors.teal,
+                        size: 20,
                       ),
                     ],
                   ),
                 ),
-                // Author and time
-                subtitle: Row(
-                  children: <Widget>[
-                    Text(
-                      "by: ${item.by}",
-                      style: TextStyle(color: Colors.grey),
-                    ),
-                    Text(
-                      " ~ ${timeAgo(item.time)}",
-                      style: TextStyle(color: Colors.grey),
-                    ),
-                    Expanded(child: Container()),
-                  ],
-                ),
-                onTap: () {
-                  Navigator.pushNamed(context, '/news/$itemId');
-                },
-              ),
-            );
-          },
-        );
-      },
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

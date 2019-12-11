@@ -16,6 +16,10 @@ class Refresh extends StatelessWidget {
       onRefresh: () async {
         await bloc.clearCache();
         bloc.fetchListIds(type);
+        
+        // Delayed just for better UX as fetching data takes too little time and
+        // user may not understand that data was updated
+        await Future.delayed(Duration(milliseconds: 400));
       },
     );
   }

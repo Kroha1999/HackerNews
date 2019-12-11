@@ -76,13 +76,23 @@ class NewsContainer extends StatelessWidget with UrlMixin, DateMixin {
                       color: item.score < 200 ? Colors.orange : Colors.red,
                       size: 22,
                     ),
-              Text('${item.score}'),
+              Text(
+                '${item.score}',
+                style: TextStyle(
+                  fontFamily: "OpenSans",
+                ),
+              ),
               Padding(padding: EdgeInsets.only(right: 5)),
               Icon(
                 OMIcons.forum,
                 color: Colors.teal,
               ),
-              Text('${item.descendants}'),
+              Text(
+                '${item.descendants}',
+                style: TextStyle(
+                  fontFamily: "OpenSans",
+                ),
+              ),
               Padding(padding: EdgeInsets.only(right: 10)),
             ],
           ),

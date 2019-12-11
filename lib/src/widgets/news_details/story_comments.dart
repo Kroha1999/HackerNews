@@ -34,7 +34,7 @@ class Comment extends StatelessWidget with UrlMixin,DateMixin {
             ),
             subtitle: item.by == ''
                 ? Text("Deleted")
-                : Row(children: <Widget>[
+                : Wrap(children: <Widget>[
                     Text('by: ${item.by}'),
                     Text(' ~ ${timeAgo(item.time)}'),
                   ]),

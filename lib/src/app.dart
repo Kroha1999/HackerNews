@@ -13,7 +13,7 @@ class App extends StatelessWidget {
         child: MaterialApp(
           theme: ThemeData(
             primarySwatch: Colors.teal,
-            fontFamily: "OpenSans",
+            fontFamily: "Merriweather",
           ),
           title: "Hacker News",
           onGenerateRoute: routes,
