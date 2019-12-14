@@ -90,7 +90,7 @@ class _LogInDialogState extends State<LogInDialog> {
     setState(() {
       _loading = true;
     });
-    var res = await bloc.setClientByCredentials(_username, _password);
+    var res = await bloc.setClientWithCredentials(_username, _password);
     if( res != null ){
       // if login was successful
       // returning to home page

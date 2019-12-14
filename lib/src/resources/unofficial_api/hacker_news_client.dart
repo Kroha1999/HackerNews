@@ -1,9 +1,10 @@
 import 'dart:io';
 
-import 'package:http/http.dart' show Client, Response, Request;
+import 'package:http/http.dart' show Client;
 import 'package:html/parser.dart' show parse;
 
-// TODO: UNOFFICIAL API
+import '../../models/vote.dart';
+
 class NewsApiClient {
   Cookie _cookie;
 
@@ -12,18 +13,10 @@ class NewsApiClient {
 
   // Constructors
   NewsApiClient.fromCookie(this._cookie);
-  
   NewsApiClient.fromCookieString(cookieString) {
     this._cookie = Cookie.fromSetCookieValue(cookieString);
   }
 
-  Map<String, dynamic> toMapDb(){
-    return <String, dynamic>{
-      "id":0,
-      "client":_cookie.toString()
-    };
-  }
-  
   /// Returns instance of [NewsApiClient] if successful, else [null]
   static Future<NewsApiClient> logIn(String username, String password) async {
     Client _client = Client();
@@ -32,7 +25,7 @@ class NewsApiClient {
       'Content-Type': 'application/x-www-form-urlencoded',
       'Access-Control-Allow-Origin': '*',
     };
-    
+
     await _client.post(
       "https://news.ycombinator.com/",
       headers: headers,
@@ -41,7 +34,8 @@ class NewsApiClient {
       (resp) {
         if (resp.statusCode == 200) {
           if (resp.headers.containsKey('set-cookie')) {
-            apiClient = NewsApiClient.fromCookie(Cookie.fromSetCookieValue(resp.headers['set-cookie']));
+            apiClient = NewsApiClient.fromCookie(
+                Cookie.fromSetCookieValue(resp.headers['set-cookie']));
           }
         }
         return apiClient;
@@ -50,8 +44,12 @@ class NewsApiClient {
     return apiClient;
   }
 
+  Map<String, dynamic> toMapDb() {
+    return <String, dynamic>{"id": 0, "client": _cookie.toString()};
+  }
+
   /// Returns [Vote] object
-  Future<Vote> _getVoteAuth(int itemId) async {
+  Future<Vote> getVote(int itemId) async {
     Vote vote;
     Map<String, String> headers = {"Cookie": _cookie.toString()};
     await _client.get("${_baseUrl}item?id=$itemId", headers: headers).then(
@@ -75,16 +73,18 @@ class NewsApiClient {
   }
 
   /// Toogles vote on for item with [itemId]
-  toogleVote(int itemId, {Vote vote}) async {
-    if (vote == null) vote = await _getVoteAuth(itemId);
+  Vote toogleVote(Vote vote) {
+    
     String href = vote.hrefUp;
     if (vote.voted == true) {
       href = vote.hrefUn;
     }
 
     // toogle the button
-    _client
-        .get("$_baseUrl$href", headers: {"Cookie": _cookie.toString()});
+    _client.get("$_baseUrl$href", headers: {"Cookie": _cookie.toString()});
+    // toogle vote object
+    vote.voted = !vote.voted;
+    return vote;
   }
 
   postComment(String commentText, int storyId) {}
@@ -94,28 +94,4 @@ class NewsApiClient {
   submit(String title, String url, String text) {}
 }
 
-class Vote {
-  /// href link to voteup
-  final String hrefUp;
 
-  /// href link to unvote
-  get hrefUn => hrefUp.replaceFirst("how=up", "how=un");
-
-  /// [true] if voted up [false] if no
-  final bool voted;
-  Vote(this.hrefUp, this.voted);
-}
-
-class User{
-  // UserId = UserName
-  String userId;
-  // Days ago
-  int created; 
-  int karma;
-  String about;
-
-  //Not public information
-  String email;
-  User(this.userId,this.created,this.karma,this.about,{this.email});
-
-}

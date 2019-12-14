@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hacker_news/src/widgets/user_widgets/vote_button.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 
 import '../../mixins/url_mixin.dart';
@@ -14,18 +15,27 @@ class NewsContainer extends StatelessWidget with UrlMixin, DateMixin {
     return Container(
       child: Column(
         children: <Widget>[
-          Container(
-            alignment: Alignment.topCenter,
-            padding: EdgeInsets.all(15),
-            child: Text(
-              item.title,
-              maxLines: 5,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
+          
+          Row(
+            children: <Widget>[
+              VoteButton(30),
+              Expanded(
+                flex: 6,
+                child: Container(
+                  alignment: Alignment.topLeft,
+                  padding: EdgeInsets.all(15),
+                  child: Text(
+                    item.title,
+                    maxLines: 5,
+                    textAlign: TextAlign.start,
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
           // Link (if present)
           Column(

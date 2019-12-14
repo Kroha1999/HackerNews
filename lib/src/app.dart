@@ -32,8 +32,10 @@ class App extends StatelessWidget {
         return MaterialPageRoute(
           builder: (context) {
             final id = int.parse(settings.name.substring(6));
+            final userBloc = UserProvider.of(context);
             final commentsBloc = CommentsProvider.of(context);
             // Fetches data for specific item
+            userBloc.fetchVote(id);
             commentsBloc.fetchItemWithComments(id);
             return NewsDetailsScreen(itemId: id);
           },
