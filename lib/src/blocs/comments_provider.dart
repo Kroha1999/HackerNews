@@ -12,7 +12,7 @@ class CommentsProvider extends InheritedWidget {
     super(key: key, child: child);
 
   static CommentsBloc of(BuildContext context) {
-    return (context.inheritFromWidgetOfExactType(CommentsProvider)as CommentsProvider).bloc;
+    return context.dependOnInheritedWidgetOfExactType<CommentsProvider>().bloc;
   }
 
   @override

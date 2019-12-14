@@ -1,9 +1,11 @@
 import 'dart:async';
 
+
 import 'data_provider.dart';
 import 'list_type.dart';
 import 'news_api_provider.dart';
 import 'news_db_provider.dart';
+import 'unofficial_api/hacker_news_client.dart';
 import '../models/item_model.dart';
 
 export 'list_type.dart';
@@ -17,6 +19,21 @@ class Repository {
   List<Cache> caches = <Cache>[
     newsDbProvider,
   ];
+  
+
+  Future<NewsApiClient> fetchClient(){
+    return newsDbProvider.fetchClient();
+  }
+
+  Future<int> setClient(NewsApiClient client){
+    return newsDbProvider.setClient(client);
+  }
+
+  clearClient() async {
+    return newsDbProvider.clearClient();
+  }
+
+
 
   // TODO: Iterate throught sources and fetch top Ids
   // Implement Db source

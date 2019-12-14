@@ -5,6 +5,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 
+import "unofficial_api/hacker_news_client.dart";
 import '../models/item_model.dart';
 import 'data_provider.dart';
 
@@ -27,14 +28,14 @@ class NewsDbProvider implements Source, Cache {
         newDb.execute("""
           CREATE TABLE Items
             (
-              id INTEGET PRIMARY KEY,
+              id INTEGER PRIMARY KEY,
               deleted INTEGER,
               type TEXT,
               by TEXT,
               time INTEGER,
               text TEXT,
               dead INTEGER, 
-              parent INTEGET,
+              parent INTEGER,
               kids BLOB,
               url TEXT,
               score INTEGER,
@@ -42,14 +43,50 @@ class NewsDbProvider implements Source, Cache {
               descendants INTEGER
             )
         """);
+        newDb.execute("""
+          CREATE TABLE Client
+            (
+              id INTEGER PRIMARY KEY,
+              client TEXT
+            )
+        """);
       },
     );
   }
 
+
+  Future<NewsApiClient> fetchClient({int id=0}) async {
+    final maps = await db.query(
+      "Client",
+      columns: null,
+      where: "id = ?",
+      whereArgs: [id],
+    );
+    if (maps.length>0){
+      if(maps[0]['client']!='')
+        return NewsApiClient.fromCookieString(maps[0]['client']);
+    }
+    return null;
+  }
+
+  Future<int> setClient(NewsApiClient client){
+    return db.insert(
+      "Client",
+      client.toMapDb(),
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+  }
+
+  Future<int> clearClient() {
+    return db.delete("Client");
+  }
+
+
+
   // TODO: store TopIds
   Future<List<int>> fetchListIds(type) {
     return null;
-  }
+  }  
 
   Future<ItemModel> fetchItem(int id) async {
     final maps = await db.query(
@@ -77,6 +114,7 @@ class NewsDbProvider implements Source, Cache {
   Future<int> clear() {
     return db.delete("Items");
   }
+
 }
 
 // The only instance of news Db in order not to create multiple instances of NewsDbProvider
