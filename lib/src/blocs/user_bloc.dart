@@ -10,19 +10,19 @@ class UserBloc {
   NewsApiClient _client;
 
   UserBloc() {
-    setClient();
+    _getClientFromDb();
   }
 
-  setClient() async {
+  _getClientFromDb() async {
     //TODO: call this initializator on datebase loaded
     // not simply wait or it
-    await Future.delayed(Duration(seconds: 2));
+    await Future.delayed(Duration(seconds: 1, milliseconds: 700));
     _client = await _repository.fetchClient();
 
     if (_client == null) {
-      setClientState(false);
+      _setClientState(false);
     } else {
-      setClientState(true);
+      _setClientState(true);
     }
   }
 
@@ -32,8 +32,21 @@ class UserBloc {
   // getters
   Observable<bool> get clientState => _clientState.stream;
 
-  // setters
-  setClientState(bool v) {
+  /// Returns [null] not successful login else [client] instance
+  setClientByCredentials(String username, String password) async {
+    var client = await NewsApiClient.logIn(username, password);
+    if(client != null){
+      _client = client;
+      // saving user to DB
+      _repository.setClient(client);
+      // notifying system about registered user
+      _setClientState(true);
+      return client;
+    } 
+    return null;
+  }
+
+  _setClientState(bool v) {
     _clientState.sink.add(v);
   }
 

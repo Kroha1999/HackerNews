@@ -29,7 +29,7 @@ class Repository {
     return newsDbProvider.setClient(client);
   }
 
-  clearClient() async {
+  Future<int> clearClient() async {
     return newsDbProvider.clearClient();
   }
 

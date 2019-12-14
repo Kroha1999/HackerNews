@@ -63,7 +63,6 @@ class NewsDbProvider implements Source, Cache {
     );
     if (maps.length > 0) {
       if (maps[0]['client'] != '') {
-        print(maps[0]['client']);
         return NewsApiClient.fromCookieString(maps[0]['client']);
       }
     }

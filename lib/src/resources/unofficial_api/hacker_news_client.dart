@@ -42,7 +42,6 @@ class NewsApiClient {
         if (resp.statusCode == 200) {
           if (resp.headers.containsKey('set-cookie')) {
             apiClient = NewsApiClient.fromCookie(Cookie.fromSetCookieValue(resp.headers['set-cookie']));
-            print("Cookie: $apiClient");
           }
         }
         return apiClient;
