@@ -6,15 +6,17 @@ import '../resources/unofficial_api/hacker_news_client.dart';
 import '../resources/repository.dart';
 
 class UserBloc {
-  Repository _repository;
+  Repository _repository = Repository();
   NewsApiClient _client;
 
   UserBloc() {
-    _repository = Repository();
     setClient();
   }
 
   setClient() async {
+    //TODO: call this initializator on datebase loaded
+    // not simply wait or it
+    await Future.delayed(Duration(seconds: 2));
     _client = await _repository.fetchClient();
 
     if (_client == null) {

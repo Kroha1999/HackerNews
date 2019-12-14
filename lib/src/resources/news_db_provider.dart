@@ -22,7 +22,7 @@ class NewsDbProvider implements Source, Cache {
     db = await openDatabase(
       path,
       version: 1,
-      onCreate: (Database newDb, int version) {
+      onCreate: (Database newDb, int version) async {
         // bool are represented as INTEGER
         // list<int> is represented as BLOB -> decode must be done
         newDb.execute("""
@@ -54,22 +54,23 @@ class NewsDbProvider implements Source, Cache {
     );
   }
 
-
-  Future<NewsApiClient> fetchClient({int id=0}) async {
+  Future<NewsApiClient> fetchClient({int id = 0}) async {
     final maps = await db.query(
       "Client",
       columns: null,
       where: "id = ?",
       whereArgs: [id],
     );
-    if (maps.length>0){
-      if(maps[0]['client']!='')
+    if (maps.length > 0) {
+      if (maps[0]['client'] != '') {
+        print(maps[0]['client']);
         return NewsApiClient.fromCookieString(maps[0]['client']);
+      }
     }
     return null;
   }
 
-  Future<int> setClient(NewsApiClient client){
+  Future<int> setClient(NewsApiClient client) {
     return db.insert(
       "Client",
       client.toMapDb(),
@@ -81,12 +82,10 @@ class NewsDbProvider implements Source, Cache {
     return db.delete("Client");
   }
 
-
-
   // TODO: store TopIds
   Future<List<int>> fetchListIds(type) {
     return null;
-  }  
+  }
 
   Future<ItemModel> fetchItem(int id) async {
     final maps = await db.query(
@@ -114,7 +113,6 @@ class NewsDbProvider implements Source, Cache {
   Future<int> clear() {
     return db.delete("Items");
   }
-
 }
 
 // The only instance of news Db in order not to create multiple instances of NewsDbProvider

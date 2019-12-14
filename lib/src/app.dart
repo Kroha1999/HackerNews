@@ -4,19 +4,22 @@ import 'screens/news_list_screen.dart';
 import 'screens/news_details_screen.dart';
 import 'blocs/stories_provider.dart';
 import 'blocs/comments_provider.dart';
+import 'blocs/user_provider.dart';
 
 class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return StoriesProvider(
-      child: CommentsProvider(
-        child: MaterialApp(
-          theme: ThemeData(
-            primarySwatch: Colors.teal,
-            fontFamily: "Merriweather",
+    return UserProvider(
+      child: StoriesProvider(
+        child: CommentsProvider(
+          child: MaterialApp(
+            theme: ThemeData(
+              primarySwatch: Colors.teal,
+              fontFamily: "Merriweather",
+            ),
+            title: "Hacker News",
+            onGenerateRoute: routes,
           ),
-          title: "Hacker News",
-          onGenerateRoute: routes,
         ),
       ),
     );
