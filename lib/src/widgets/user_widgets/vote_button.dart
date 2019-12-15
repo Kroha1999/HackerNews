@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:hacker_news/src/blocs/user_provider.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 
+import '../../blocs/user_provider.dart';
 import '../../models/vote.dart';
 
 class VoteButton extends StatelessWidget {
@@ -20,13 +20,21 @@ class VoteButton extends StatelessWidget {
         if (snapshot.data) {
           return Container(
             margin: EdgeInsets.all(size/6),
-            width: size,
-            height: size,
+            width: size+10,
+            height: size+15,
             child: StreamBuilder(
               stream: bloc.voteState,
               builder: (context, AsyncSnapshot<Vote> snapshot) {
-                if (!snapshot.hasData) {
-                  return Container();
+                if (!snapshot.hasData || (snapshot.data==null)) {
+                  return IconButton(
+                    icon: Icon(
+                      OMIcons.thumbUp,
+                      size: size,
+                      color: Colors.grey,
+                    ),
+                    tooltip: "loading",
+                    onPressed: null,
+                  );
                 }
                 if (snapshot.data.voted) {
                   return IconButton(
@@ -34,6 +42,7 @@ class VoteButton extends StatelessWidget {
                       Icons.thumb_up,
                       size: size,
                     ),
+                    tooltip: "unvote",
                     onPressed: () => bloc.toogleVote(snapshot.data),
                   );
                 }
@@ -42,6 +51,7 @@ class VoteButton extends StatelessWidget {
                     OMIcons.thumbUp,
                     size: size,
                   ),
+                  tooltip: "upvote",
                   onPressed: () => bloc.toogleVote(snapshot.data),
                 );
               },
@@ -52,4 +62,6 @@ class VoteButton extends StatelessWidget {
       },
     );
   }
+
+
 }

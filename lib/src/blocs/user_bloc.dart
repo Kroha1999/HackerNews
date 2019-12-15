@@ -74,7 +74,11 @@ class UserBloc {
     });
   }
 
-  toogleVote(Vote vote) {
+  toogleVote(Vote vote) async {
+    // putting vote button to inactive state
+    _votes.sink.add(null);
+    // wait half a secod is much more efficient then to make another http request 
+    await Future.delayed(Duration(milliseconds: 500));
     // add to a sink updated vote
     _votes.sink.add(_client.toogleVote(vote));
   }

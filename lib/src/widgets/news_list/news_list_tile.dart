@@ -49,6 +49,7 @@ class NewsListTile extends StatelessWidget with DateMixin {
           GestureDetector(
             onTap: () => Navigator.pushNamed(context, '/news/$itemId'),
             child: Container(
+              color: Colors.transparent,
               alignment: Alignment.centerLeft,
               padding: EdgeInsets.fromLTRB(10, 8, 10, 8),
               child: Column(
@@ -86,9 +87,12 @@ class NewsListTile extends StatelessWidget with DateMixin {
             child: Row(
               children: <Widget>[
                 // Author
-                Text(
-                  "By: ${item.by}",
-                  style: TextStyle(color: Colors.grey[700]),
+                GestureDetector(
+                  onTap: () => Navigator.pushNamed(context, "/user/${item.by}"),
+                  child: Text(
+                    "By: ${item.by}",
+                    style: TextStyle(color: Colors.grey[700]),
+                  ),
                 ),
                 Expanded(child: Container()),
                 // Comments count
