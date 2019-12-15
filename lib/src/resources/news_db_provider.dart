@@ -47,6 +47,7 @@ class NewsDbProvider implements Source, Cache {
           CREATE TABLE Client
             (
               id INTEGER PRIMARY KEY,
+              username TEXT,
               client TEXT
             )
         """);
@@ -54,6 +55,7 @@ class NewsDbProvider implements Source, Cache {
     );
   }
 
+  // by default user will be written to id = 0
   Future<NewsApiClient> fetchClient({int id = 0}) async {
     final maps = await db.query(
       "Client",
@@ -63,7 +65,8 @@ class NewsDbProvider implements Source, Cache {
     );
     if (maps.length > 0) {
       if (maps[0]['client'] != '') {
-        return NewsApiClient.fromCookieString(maps[0]['client']);
+        return NewsApiClient.fromCookieString(
+            maps[0]['username'], maps[0]['client']);
       }
     }
     return null;

@@ -24,7 +24,7 @@ class LogInButton extends StatelessWidget {
           if (snapshot.data) {
             return IconButton(
               icon: Icon(Icons.verified_user),
-              onPressed: null,
+              onPressed: () => showAuthorPage(context, bloc),
             );
           }
 
@@ -35,6 +35,10 @@ class LogInButton extends StatelessWidget {
         },
       ),
     );
+  }
+
+  showAuthorPage(BuildContext context, UserBloc bloc) {
+    Navigator.pushNamed(context, "/user/${bloc.currentUserName}");
   }
 
   showLoginDialog(BuildContext context) {

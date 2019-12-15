@@ -4,17 +4,20 @@ import 'package:http/http.dart' show Client;
 import 'package:html/parser.dart' show parse;
 
 import '../../models/vote.dart';
+import '../../models/user.dart';
 
 class NewsApiClient {
   Cookie _cookie;
+  String _username;
+  String get username => _username;
 
   Client _client = Client();
   String _baseUrl = "https://news.ycombinator.com/";
 
-  // Constructors
-  NewsApiClient.fromCookie(this._cookie);
-  NewsApiClient.fromCookieString(cookieString) {
+  // Constructor
+  NewsApiClient.fromCookieString(username, cookieString) {
     this._cookie = Cookie.fromSetCookieValue(cookieString);
+    this._username = username;
   }
 
   /// Returns instance of [NewsApiClient] if successful, else [null]
@@ -34,8 +37,8 @@ class NewsApiClient {
       (resp) {
         if (resp.statusCode == 200) {
           if (resp.headers.containsKey('set-cookie')) {
-            apiClient = NewsApiClient.fromCookie(
-                Cookie.fromSetCookieValue(resp.headers['set-cookie']));
+            apiClient = NewsApiClient.fromCookieString(
+                username, resp.headers['set-cookie']);
           }
         }
         return apiClient;
@@ -45,7 +48,11 @@ class NewsApiClient {
   }
 
   Map<String, dynamic> toMapDb() {
-    return <String, dynamic>{"id": 0, "client": _cookie.toString()};
+    return <String, dynamic>{
+      "id": 0,
+      "username": _username,
+      "client": _cookie.toString()
+    };
   }
 
   /// Returns [Vote] object
@@ -74,7 +81,6 @@ class NewsApiClient {
 
   /// Toogles vote on for item with [itemId]
   Vote toogleVote(Vote vote) {
-    
     String href = vote.hrefUp;
     if (vote.voted == true) {
       href = vote.hrefUn;
@@ -92,6 +98,51 @@ class NewsApiClient {
   replyComment(String replyText, int storyId, int commentId) {}
 
   submit(String title, String url, String text) {}
+
+  static Future<User> getUserWithUsername(String username) async {
+    Client _client = Client();
+    User user;
+    Map<String, String> headers = {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Access-Control-Allow-Origin': '*',
+    };
+
+    await _client
+        .get(
+      "https://news.ycombinator.com/user?id=$username",
+      headers: headers,
+    )
+        .then(
+      (resp) {
+        if (resp.statusCode == 200) {
+          var doc = parse(resp.bodyBytes);
+          var elements = doc.querySelectorAll("tbody");
+          var element;
+          // looking for proper tbody
+          for (var el in elements) {
+            if (el.children.length >= 4) {
+              element = el;
+              break;
+            }
+          }
+          if (element == null) return null;
+          // working with tr elements
+          elements = element.children;
+          int i = 0;
+          List<String> params = [];
+          while (i < 4) {
+            if (elements[i].children[1].children.isNotEmpty) {
+              params.add(elements[i].children[1].children[0].innerHtml);
+            } else {
+              params.add(elements[i].children[1].innerHtml);
+            }
+            i++;
+          }
+          user = User(params[0], params[1], int.parse(params[2]), params[3]);
+        }
+        return user;
+      },
+    );
+    return user;
+  }
 }
-
-

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'screens/author_screen.dart';
 import 'screens/news_list_screen.dart';
 import 'screens/news_details_screen.dart';
 import 'blocs/stories_provider.dart';
@@ -27,7 +28,7 @@ class App extends StatelessWidget {
 
   Route routes(RouteSettings settings) {
     if (settings.name.length > 6) {
-      //NewsDetails route with specific [id]
+      // NewsDetails route with specific [id]
       if (settings.name.substring(0, 6) == '/news/') {
         return MaterialPageRoute(
           builder: (context) {
@@ -38,6 +39,17 @@ class App extends StatelessWidget {
             userBloc.fetchVote(id);
             commentsBloc.fetchItemWithComments(id);
             return NewsDetailsScreen(itemId: id);
+          },
+        );
+      }
+      // AuthorScreen route with specific [username] string
+      if (settings.name.substring(0, 6) == '/user/') {
+        return MaterialPageRoute(
+          builder: (context) {
+            final userBloc = UserProvider.of(context);
+            final author = settings.name.substring(6);
+            userBloc.userSink.add(author);
+            return AuthorScreen();
           },
         );
       }

@@ -2,7 +2,7 @@ class User {
   // UserId = UserName
   String userId;
   // Days ago
-  int created;
+  String created;
   int karma;
   String about;
 
