@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hacker_news/src/widgets/user_widgets/author_button.dart';
 import 'package:hacker_news/src/widgets/user_widgets/vote_button.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 
@@ -69,7 +70,7 @@ class NewsContainer extends StatelessWidget with UrlMixin, DateMixin {
           Row(
             children: <Widget>[
               Padding(padding: EdgeInsets.only(left: 10)),
-              Text("by: ${item.by}"),
+              AuthorButton(item.by,color: Colors.black,),
               Text(
                 " ~ ${timeAgo(item.time)}",
                 style: TextStyle(color: Colors.grey),

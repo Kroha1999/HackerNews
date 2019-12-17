@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:hacker_news/src/widgets/user_widgets/author_button.dart';
 
 import '../../mixins/date_mixin.dart';
 import '../../mixins/url_mixin.dart';
@@ -35,7 +36,7 @@ class Comment extends StatelessWidget with UrlMixin,DateMixin {
             subtitle: item.by == ''
                 ? Text("Deleted")
                 : Wrap(children: <Widget>[
-                    Text('by: ${item.by}'),
+                    AuthorButton(item.by, color: Colors.grey[700],),
                     Text(' ~ ${timeAgo(item.time)}'),
                   ]),
           ),

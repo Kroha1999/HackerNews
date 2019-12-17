@@ -4,6 +4,7 @@ import 'package:outline_material_icons/outline_material_icons.dart';
 import '../../mixins/date_mixin.dart';
 import '../../blocs/stories_provider.dart';
 import '../../models/item_model.dart';
+import '../user_widgets/author_button.dart';
 import 'loading_list_tile.dart';
 
 class NewsListTile extends StatelessWidget with DateMixin {
@@ -86,16 +87,9 @@ class NewsListTile extends StatelessWidget with DateMixin {
             height: 30,
             child: Row(
               children: <Widget>[
-                // Author
-                GestureDetector(
-                  onTap: () => Navigator.pushNamed(context, "/user/${item.by}"),
-                  child: Text(
-                    "By: ${item.by}",
-                    style: TextStyle(color: Colors.grey[700]),
-                  ),
-                ),
+                AuthorButton(item.by, color: Colors.grey[700],),
                 Expanded(child: Container()),
-                // Comments count
+                // Score count
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.center,
