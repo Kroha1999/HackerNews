@@ -55,6 +55,15 @@ class NewsDbProvider implements Source, Cache {
     );
   }
 
+  Future<bool> isDbLoaded()async{
+    int i = 0;
+    while(i < 20){
+      if(db!=null) return true;
+      await Future.delayed(Duration(milliseconds:200));
+    }
+    return false;
+  }
+
   // by default user will be written to id = 0
   Future<NewsApiClient> fetchClient({int id = 0}) async {
     final maps = await db.query(

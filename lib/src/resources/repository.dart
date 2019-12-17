@@ -34,6 +34,9 @@ class Repository {
   }
 
 
+  Future<bool> isDbLoaded(){
+    return newsDbProvider.isDbLoaded();
+  }
 
   // TODO: Iterate throught sources and fetch top Ids
   // Implement Db source

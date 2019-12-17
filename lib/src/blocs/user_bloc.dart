@@ -50,9 +50,7 @@ class UserBloc {
   }
 
   _getClientFromDb() async {
-    //TODO: call this initializator on datebase loaded
-    // not simply wait or it
-    await Future.delayed(Duration(seconds: 2));
+    await _repository.isDbLoaded();
     // _repository.clearClient();
     _client = await _repository.fetchClient();
 
