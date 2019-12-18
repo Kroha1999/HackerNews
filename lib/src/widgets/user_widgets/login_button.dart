@@ -24,12 +24,14 @@ class LogInButton extends StatelessWidget {
           if (snapshot.data) {
             return IconButton(
               icon: Icon(Icons.verified_user),
+              tooltip: "current user",
               onPressed: () => showAuthorPage(context, bloc),
             );
           }
 
           return IconButton(
             icon: Icon(Icons.account_circle),
+            tooltip: "log in",
             onPressed: () => showLoginDialog(context),
           );
         },

@@ -4,6 +4,7 @@ import '../resources/list_type.dart';
 import '../blocs/stories_provider.dart';
 import '../widgets/news_list/news_list.dart';
 import '../widgets/user_widgets/login_button.dart';
+import '../widgets/user_widgets/go_to_submit.dart';
 
 class NewsListScreen extends StatefulWidget {
   final StoriesBloc _bloc;
@@ -23,11 +24,10 @@ class NewsListScreen extends StatefulWidget {
 
 class _NewsListScreenState extends State<NewsListScreen>
     with SingleTickerProviderStateMixin {
-  
   TabController _controller;
   ScrollController _scrollController;
   List<Widget> _tabs = [];
-  
+
   @override
   void initState() {
     widget._bloc.fetchListIds(TypeOfList.values[0]);
@@ -96,6 +96,7 @@ class _NewsListScreenState extends State<NewsListScreen>
                 style: TextStyle(fontSize: 25),
               ),
               actions: <Widget>[
+                GoToSubmitButton(),
                 LogInButton(),
               ],
               pinned: true,

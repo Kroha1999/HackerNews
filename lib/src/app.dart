@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'screens/submit_screen.dart';
 import 'screens/author_screen.dart';
 import 'screens/news_list_screen.dart';
 import 'screens/news_details_screen.dart';
@@ -28,6 +29,12 @@ class App extends StatelessWidget {
 
   Route routes(RouteSettings settings) {
     if (settings.name.length > 6) {
+      // Submit news screen
+      if (settings.name == "/submit") {
+        return MaterialPageRoute(builder: (context) {
+          return SubmitScreen();
+        });
+      }
       // NewsDetails route with specific [id]
       if (settings.name.substring(0, 6) == '/news/') {
         return MaterialPageRoute(

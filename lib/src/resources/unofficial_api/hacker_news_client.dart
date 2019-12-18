@@ -12,7 +12,7 @@ class NewsApiClient {
   String get username => _username;
 
   Client _client = Client();
-  String _baseUrl = "https://news.ycombinator.com/";
+  String _baseUrl = "https://news.ycombinator.com";
 
   // Constructor
   NewsApiClient.fromCookieString(username, cookieString) {
@@ -59,7 +59,7 @@ class NewsApiClient {
   Future<Vote> getVote(int itemId) async {
     Vote vote;
     Map<String, String> headers = {"Cookie": _cookie.toString()};
-    await _client.get("${_baseUrl}item?id=$itemId", headers: headers).then(
+    await _client.get("$_baseUrl/item?id=$itemId", headers: headers).then(
       (resp) {
         if (resp.statusCode == 200) {
           var doc = parse(resp.bodyBytes);
@@ -87,17 +87,11 @@ class NewsApiClient {
     }
 
     // toogle the button
-    _client.get("$_baseUrl$href", headers: {"Cookie": _cookie.toString()});
+    _client.get("$_baseUrl/$href", headers: {"Cookie": _cookie.toString()});
     // toogle vote object
     vote.voted = !vote.voted;
     return vote;
   }
-
-  postComment(String commentText, int storyId) {}
-
-  replyComment(String replyText, int storyId, int commentId) {}
-
-  submit(String title, String url, String text) {}
 
   static Future<User> getUserWithUsername(String username) async {
     Client _client = Client();
@@ -145,4 +139,72 @@ class NewsApiClient {
     );
     return user;
   }
+
+  Future<bool> submit(String title, String url, String text) async {
+    // title should be less then 80 symbols
+    final fnop = "submit-page";
+    final fnid = await _findFNID();
+    if (fnid == null) {
+      // smth went wrong
+      return null;
+    }
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Access-Control-Allow-Origin': '*',
+      'Cookie': _cookie.toString(),
+    };
+
+    bool success = true;
+    await _client.post(
+      "$_baseUrl/r",
+      headers: headers,
+      body: {
+        "fnid": fnid,
+        "fnop": fnop,
+        "title": title,
+        "url": url,
+        "text": text,
+      },
+    ).then((resp) {
+      print(resp.body);
+      print(resp.headers);
+      print(resp.statusCode);
+      if (resp.headers.containsKey("location")) {
+        if (resp.headers["location"] == "newest") {
+          return;
+        }
+      }
+      success = false;
+    });
+    return success;
+  }
+
+  Future<String> _findFNID() async {
+    String fnid;
+
+    Map<String, String> headers = {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Access-Control-Allow-Origin': '*',
+      'Cookie': _cookie.toString(),
+    };
+
+    await _client
+        .get(
+      "https://news.ycombinator.com/submit",
+      headers: headers,
+    )
+        .then((resp) {
+      if (resp.statusCode == 200) {
+        var doc = parse(resp.bodyBytes);
+        var el = doc.querySelector("input");
+        fnid = el.attributes['value'];
+      }
+    });
+    return fnid;
+  }
+
+  postComment(String commentText, int storyId) {}
+
+  replyComment(String replyText, int storyId, int commentId) {}
 }
