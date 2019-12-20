@@ -65,6 +65,7 @@ class NewsApiClient {
           var doc = parse(resp.bodyBytes);
           var el = doc.getElementById("up_$itemId");
 
+          if(el==null) return null;
           // element is 'nosee' class - it is voted
           if (el.attributes.containsKey('class')) {
             if (el.attributes['class'] == 'nosee') {
@@ -167,9 +168,6 @@ class NewsApiClient {
         "text": text,
       },
     ).then((resp) {
-      print(resp.body);
-      print(resp.headers);
-      print(resp.statusCode);
       if (resp.headers.containsKey("location")) {
         if (resp.headers["location"] == "newest") {
           return;
