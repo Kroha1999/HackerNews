@@ -11,12 +11,12 @@ import '../models/item_model.dart';
 export 'list_type.dart';
 
 class Repository {
-  List<Source> sources = <Source>[
+  List<Source> _sources = <Source>[
     newsDbProvider,
     NewsApiProvider(),
   ];
 
-  List<Cache> caches = <Cache>[
+  List<Cache> _caches = <Cache>[
     newsDbProvider,
   ];
   
@@ -33,29 +33,28 @@ class Repository {
     return newsDbProvider.clearClient();
   }
 
-
   Future<bool> isDbLoaded(){
     return newsDbProvider.isDbLoaded();
   }
 
-  // TODO: Iterate throught sources and fetch top Ids
+  // TODO: Iterate throught _sources and fetch top Ids
   // Implement Db source
   Future<List<int>> fetchListIds(TypeOfList type) async {
-    return sources[1].fetchListIds(type);
+    return _sources[1].fetchListIds(type);
   }
 
   Future<ItemModel> fetchItem(int id) async {
     ItemModel item;
     var source;
 
-    for (source in sources) {
+    for (source in _sources) {
       item = await source.fetchItem(id);
       if (item != null) {
         break;
       }
     }
 
-    for (var cache in caches) {
+    for (var cache in _caches) {
       if (cache != source) {
         cache.addItem(item);
       }
@@ -65,7 +64,7 @@ class Repository {
   }
 
   clearCache() async {
-    for(var cache in caches) {
+    for(var cache in _caches) {
       await cache.clear();
     }
   }

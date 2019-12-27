@@ -10,7 +10,7 @@ import '../models/item_model.dart';
 import 'data_provider.dart';
 
 class NewsDbProvider implements Source, Cache {
-  Database db;
+  Database _db;
 
   NewsDbProvider() {
     init();
@@ -19,7 +19,7 @@ class NewsDbProvider implements Source, Cache {
   void init() async {
     Directory documentsDirectory = await getApplicationDocumentsDirectory();
     final path = join(documentsDirectory.path, "items.db");
-    db = await openDatabase(
+    _db = await openDatabase(
       path,
       version: 1,
       onCreate: (Database newDb, int version) async {
@@ -55,18 +55,18 @@ class NewsDbProvider implements Source, Cache {
     );
   }
 
-  Future<bool> isDbLoaded()async{
+  Future<bool> isDbLoaded() async {
     int i = 0;
-    while(i < 20){
-      if(db!=null) return true;
-      await Future.delayed(Duration(milliseconds:200));
+    while (i < 20) {
+      if (_db != null) return true;
+      await Future.delayed(Duration(milliseconds: 200));
     }
     return false;
   }
 
   // by default user will be written to id = 0
   Future<NewsApiClient> fetchClient({int id = 0}) async {
-    final maps = await db.query(
+    final maps = await _db.query(
       "Client",
       columns: null,
       where: "id = ?",
@@ -82,7 +82,7 @@ class NewsDbProvider implements Source, Cache {
   }
 
   Future<int> setClient(NewsApiClient client) {
-    return db.insert(
+    return _db.insert(
       "Client",
       client.toMapDb(),
       conflictAlgorithm: ConflictAlgorithm.replace,
@@ -90,7 +90,7 @@ class NewsDbProvider implements Source, Cache {
   }
 
   Future<int> clearClient() {
-    return db.delete("Client");
+    return _db.delete("Client");
   }
 
   // TODO: store TopIds
@@ -99,7 +99,7 @@ class NewsDbProvider implements Source, Cache {
   }
 
   Future<ItemModel> fetchItem(int id) async {
-    final maps = await db.query(
+    final maps = await _db.query(
       "Items",
       columns: null,
       where: "id = ?",
@@ -114,7 +114,7 @@ class NewsDbProvider implements Source, Cache {
   }
 
   Future<int> addItem(ItemModel item) {
-    return db.insert(
+    return _db.insert(
       "Items",
       item.toMapDb(),
       conflictAlgorithm: ConflictAlgorithm.ignore,
@@ -122,7 +122,7 @@ class NewsDbProvider implements Source, Cache {
   }
 
   Future<int> clear() {
-    return db.delete("Items");
+    return _db.delete("Items");
   }
 }
 

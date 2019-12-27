@@ -77,7 +77,6 @@ class _SubmitFormState extends State<SubmitForm> with NotificationMixin {
                   "OR",
                   style: TextStyle(color: Colors.grey),
                 ),
-                // Padding(padding: EdgeInsets.only(top: 10)),
                 TextFormField(
                   maxLines: null,
                   decoration: InputDecoration(

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:http/http.dart' show Client;
 import 'package:html/parser.dart' show parse;
+import 'package:html/dom.dart';
 
 import '../../models/vote.dart';
 import '../../models/user.dart';
@@ -32,7 +33,11 @@ class NewsApiClient {
     await _client.post(
       "https://news.ycombinator.com/",
       headers: headers,
-      body: {"acct": username, "pw": password, "goto": "news"},
+      body: {
+        "acct": username,
+        "pw": password,
+        "goto": "news",
+      },
     ).then(
       (resp) {
         if (resp.statusCode == 200) {
@@ -47,6 +52,7 @@ class NewsApiClient {
     return apiClient;
   }
 
+  /// Serialize NewsApi Client function
   Map<String, dynamic> toMapDb() {
     return <String, dynamic>{
       "id": 0,
@@ -65,7 +71,7 @@ class NewsApiClient {
           var doc = parse(resp.bodyBytes);
           var el = doc.getElementById("up_$itemId");
 
-          if(el==null) return null;
+          if (el == null) return null;
           // element is 'nosee' class - it is voted
           if (el.attributes.containsKey('class')) {
             if (el.attributes['class'] == 'nosee') {
@@ -202,7 +208,49 @@ class NewsApiClient {
     return fnid;
   }
 
-  postComment(String commentText, int storyId) {}
+  Future<bool> postComment(String commentText, int parentId) async {
+    Map<String, String> headers = {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Access-Control-Allow-Origin': '*',
+      'Cookie': _cookie.toString(),
+    };
+    String hmac;
 
-  replyComment(String replyText, int storyId, int commentId) {}
+    hmac = await _findHmac(parentId);
+    if (hmac == null) return false;
+
+    _client.post("$_baseUrl/comment", headers: headers, body: {
+      'parent': '$parentId',
+      'goto': "item?id=$parentId",
+      'hmac': hmac,
+      'text': commentText,
+    });
+    return true;
+  }
+
+  Future<String> _findHmac(int parentId) async {
+    String hmac;
+    Map<String, String> headers = {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Access-Control-Allow-Origin': '*',
+      'Cookie': _cookie.toString(),
+    };
+
+    await _client
+        .get("$_baseUrl/item?id=$parentId", headers: headers)
+        .then((resp) {
+      if (resp.statusCode == 200) {
+        var doc = parse(resp.bodyBytes);
+        List<Element> elemets = doc.querySelectorAll("input");
+        for (Element el in elemets) {
+          if (el.attributes.containsKey('name')) {
+            if (el.attributes['name'] == 'hmac') {
+              hmac = el.attributes['value'];
+            }
+          }
+        }
+      }
+    });
+    return hmac;
+  }
 }

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:hacker_news/src/widgets/user_widgets/author_button.dart';
-import 'package:hacker_news/src/widgets/user_widgets/vote_button.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 
+import '../../widgets/user_widgets/author_button.dart';
+import '../../widgets/user_widgets/comment_button.dart';
+import '../../widgets/user_widgets/vote_button.dart';
 import '../../mixins/url_mixin.dart';
 import '../../mixins/date_mixin.dart';
 import '../../models/item_model.dart';
@@ -16,10 +17,8 @@ class NewsContainer extends StatelessWidget with UrlMixin, DateMixin {
     return Container(
       child: Column(
         children: <Widget>[
-          
           Row(
             children: <Widget>[
-              VoteButton(30),
               Expanded(
                 flex: 6,
                 child: Container(
@@ -40,37 +39,55 @@ class NewsContainer extends StatelessWidget with UrlMixin, DateMixin {
           ),
           // Link (if present)
           Column(
-            children: item.url == "" || item.url == null
-                ? <Widget>[]
-                : <Widget>[
-                    IconButton(
-                      iconSize: 50,
-                      icon: Icon(Icons.launch),
-                      onPressed: () => launchURL(item.url),
-                    ),
-                    Center(
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                          left: 30,
-                          right: 30,
-                          bottom: 10,
-                          top: 0,
-                        ),
-                        child: Text(
-                          "${item.url}",
-                          style: TextStyle(fontSize: 12, color: Colors.grey),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-                      ),
-                    ),
-                  ],
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  VoteButton(30),
+                  SizedBox(
+                    width: 30,
+                  ),
+                  IconButton(
+                    iconSize: 50,
+                    icon: Icon(Icons.launch),
+                    onPressed: item.url == "" || item.url == null
+                        ? null
+                        : () => launchURL(item.url),
+                  ),
+                  SizedBox(
+                    width: 30,
+                  ),
+                  CommentButton(30, item),
+                ],
+              ),
+              Center(
+                child: Padding(
+                  padding: EdgeInsets.only(
+                    left: 30,
+                    right: 30,
+                    bottom: 10,
+                    top: 0,
+                  ),
+                  child: Text(
+                    "${item.url}",
+                    style: TextStyle(fontSize: 12, color: Colors.grey),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ),
+            ],
           ),
           //Bottom line
           Row(
             children: <Widget>[
               Padding(padding: EdgeInsets.only(left: 10)),
-              AuthorButton(item.by,color: Colors.black,),
+              AuthorButton(
+                item.by,
+                color: Colors.black,
+              ),
               Text(
                 " ~ ${timeAgo(item.time)}",
                 style: TextStyle(color: Colors.grey),

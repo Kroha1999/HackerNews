@@ -6,8 +6,10 @@ class User {
   int karma;
   String about;
 
-  //Not public information
-  dynamic htmlDescription;
-  String email;
-  User(this.userId, this.created, this.karma, this.about, {this.email});
+  User(
+    this.userId,
+    this.created,
+    this.karma,
+    this.about,
+  );
 }

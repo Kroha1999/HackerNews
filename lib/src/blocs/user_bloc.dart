@@ -26,7 +26,7 @@ class UserBloc {
   Observable<User> get currentUser => _users.stream.transform(usernameToUser);
 
   // values
-  String get currentUserName => _client.username;
+  String get currentUserName => _client?.username;
 
   // Sinks
   get userSink => _users.sink;
@@ -83,6 +83,10 @@ class UserBloc {
 
   Future<bool> submitStory(String title, String url, String text) {
     return _client.submit(title, url, text);
+  }
+
+  Future<bool> submitComment(String comment, int parentId) {
+    return _client.postComment(comment, parentId);
   }
 
   logout() {
