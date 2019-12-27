@@ -17,6 +17,7 @@ Just another client for HackerNews service.
         </div>
     </li>
 </ul>
+
 ## Authenticated user
 <ul>
     <li>
