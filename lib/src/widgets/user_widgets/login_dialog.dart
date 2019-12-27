@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../mixins/notification_mixin.dart';
 import '../../blocs/user_provider.dart';
 
 class LogInDialog extends StatefulWidget {
@@ -7,7 +8,7 @@ class LogInDialog extends StatefulWidget {
   _LogInDialogState createState() => _LogInDialogState();
 }
 
-class _LogInDialogState extends State<LogInDialog> {
+class _LogInDialogState extends State<LogInDialog> with NotificationMixin {
   UserBloc bloc;
   final _formKey = GlobalKey<FormState>();
 
@@ -34,8 +35,8 @@ class _LogInDialogState extends State<LogInDialog> {
           key: _formKey,
           child: Column(
             children: <Widget>[
-              Text("Log in",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              Text("Log In",
+                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
               // _username field
               TextFormField(
                 decoration: InputDecoration(
@@ -95,12 +96,15 @@ class _LogInDialogState extends State<LogInDialog> {
       // if login was successful
       // returning to home page
       Navigator.of(context, rootNavigator: true).pop();
+      showFlushBar(context, "Logged in as $_username");
+      return;
     }
     // if login was not successful
     setState(() {
       _loading = false;
-      _offset = 40;
+      _offset = 50;
       _errorText = "Wrong credentials";
+      showFlushBar(context, "Wrong credentials",status: Status.warning);
     });
   }
 }

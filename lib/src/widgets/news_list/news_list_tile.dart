@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 
 import '../../mixins/date_mixin.dart';
@@ -96,10 +97,7 @@ class NewsListTile extends StatelessWidget with DateMixin {
                   children: <Widget>[
                     Text(
                       "${item.score}",
-                      style: TextStyle(
-                        fontFamily: "OpenSans",
-                        color: Colors.grey[700],
-                      ),
+                      style: GoogleFonts.openSans().apply(color: Colors.grey[700]),
                     ),
                     item.score < 100
                         ? Icon(
@@ -124,10 +122,7 @@ class NewsListTile extends StatelessWidget with DateMixin {
                     children: <Widget>[
                       Text(
                         "${item.descendants}",
-                        style: TextStyle(
-                          fontFamily: "OpenSans",
-                          color: Colors.grey[700],
-                        ),
+                        style: GoogleFonts.openSans().apply(color: Colors.grey[700]),
                       ),
                       Icon(
                         OMIcons.forum,

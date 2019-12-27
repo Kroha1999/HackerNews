@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'screens/submit_screen.dart';
 import 'screens/author_screen.dart';
@@ -9,15 +10,18 @@ import 'blocs/comments_provider.dart';
 import 'blocs/user_provider.dart';
 
 class App extends StatelessWidget {
+  
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context).textTheme;
     return UserProvider(
       child: StoriesProvider(
         child: CommentsProvider(
           child: MaterialApp(
             theme: ThemeData(
               primarySwatch: Colors.teal,
-              fontFamily: "Merriweather",
+              textTheme: GoogleFonts.merriweatherTextTheme(theme),
+              primaryTextTheme: GoogleFonts.merriweatherTextTheme(theme).apply(bodyColor: Colors.white),
             ),
             title: "Hacker News",
             onGenerateRoute: routes,

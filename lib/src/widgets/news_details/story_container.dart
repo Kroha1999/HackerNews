@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 
 import '../../widgets/user_widgets/author_button.dart';
@@ -106,9 +107,7 @@ class NewsContainer extends StatelessWidget with UrlMixin, DateMixin {
                     ),
               Text(
                 '${item.score}',
-                style: TextStyle(
-                  fontFamily: "OpenSans",
-                ),
+                style: GoogleFonts.openSans(),
               ),
               Padding(padding: EdgeInsets.only(right: 5)),
               Icon(
@@ -117,9 +116,7 @@ class NewsContainer extends StatelessWidget with UrlMixin, DateMixin {
               ),
               Text(
                 '${item.descendants}',
-                style: TextStyle(
-                  fontFamily: "OpenSans",
-                ),
+                style: GoogleFonts.openSans(),
               ),
               Padding(padding: EdgeInsets.only(right: 10)),
             ],

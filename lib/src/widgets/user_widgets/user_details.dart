@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../../blocs/user_provider.dart';
 import '../../mixins/url_mixin.dart';
@@ -10,7 +11,7 @@ class UserDetails extends StatelessWidget with UrlMixin{
   final User user;
   UserDetails(this.user);
 
-  final style = TextStyle(fontSize: 20, fontFamily: "OpenSans");
+  final style = GoogleFonts.openSans(fontSize: 20);
   @override
   Widget build(BuildContext context) {
     UserBloc bloc = UserProvider.of(context);

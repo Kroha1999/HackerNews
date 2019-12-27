@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
+import '../../mixins/notification_mixin.dart';
 import '../../blocs/user_provider.dart';
 
-class LogOutButton extends StatelessWidget {
-  final style = TextStyle(fontSize: 30, fontFamily: "OpenSans");
+class LogOutButton extends StatelessWidget with NotificationMixin {
+  final style = GoogleFonts.openSans(fontSize: 20);
   @override
   Widget build(BuildContext context) {
     UserBloc bloc = UserProvider.of(context);
@@ -18,12 +20,12 @@ class LogOutButton extends StatelessWidget {
             child: Container(
               width: MediaQuery.of(context).size.width/2,
               child: RaisedButton(
-                padding: EdgeInsets.all(8),
+                padding: EdgeInsets.all(5),
                 shape: RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(22.0),
-                  side: BorderSide(color: Colors.red)
+                  borderRadius: BorderRadius.circular(22.0),
+                  // side: BorderSide(color: Colors.tealAccent)
                 ),
-                color: Colors.redAccent,
+                color: Colors.teal,
                 textColor: Colors.white,
                 child: Text(
                   "LogOut",
@@ -42,6 +44,7 @@ class LogOutButton extends StatelessWidget {
   logout(BuildContext context, UserBloc bloc) {
     bloc.logout();
     Navigator.pop(context);
+    showFlushBar(context, "Logged Out");
   }
 
 }

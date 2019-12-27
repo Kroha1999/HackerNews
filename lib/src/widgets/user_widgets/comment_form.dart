@@ -38,14 +38,16 @@ class _CommentFormState extends State<CommentForm> with NotificationMixin {
             },
           ),
         ),
+        Padding(padding: EdgeInsets.only(top: 10),),
         RaisedButton(
+          color: Colors.teal,
           child: loading
               ? Container(
                   width: 10,
                   height: 10,
                   child: CircularProgressIndicator(),
                 )
-              : Text("post comment"),
+              : Text("Post comment",style: TextStyle(color: Colors.white,fontSize: 20),),
           onPressed: loading ? null : () => comment(context, bloc),
         )
       ],
