@@ -22,7 +22,7 @@ class CommentsBloc {
   }
 
   // Recursive transformer that fetches kids (comments)
-  // waits for comments to load, then looks for 
+  // waits for comments to load, then looks for
   _commentsTransformer() {
     return ScanStreamTransformer<int, Map<int, Future<ItemModel>>>(
       (Map<int, Future<ItemModel>> cache, int id, int index) {
@@ -31,9 +31,9 @@ class CommentsBloc {
         // so as soon as data will be loaded
         // we are passing each kid to to fetch
         // information about comment and for it's
-        // subcomments, until we reach empty list 
-        cache[id].then((ItemModel item){
-          for(var kidId in item.kids){
+        // subcomments, until we reach empty list
+        cache[id].then((ItemModel item) {
+          for (var kidId in item.kids) {
             fetchItemWithComments(kidId);
           }
         });
@@ -42,6 +42,10 @@ class CommentsBloc {
       <int, Future<ItemModel>>{},
     );
   }
+
+  ItemModel _parent;
+  set setParent(ItemModel item) => _parent = item;
+  ItemModel get getParent => _parent;
 
   dispose() {
     _commentsFetcher.close();

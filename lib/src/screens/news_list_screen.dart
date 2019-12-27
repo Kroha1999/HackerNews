@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../resources/list_type.dart';
 import '../blocs/stories_provider.dart';
 import '../widgets/news_list/news_list.dart';
+import '../widgets/user_widgets/login_button.dart';
+import '../widgets/user_widgets/go_to_submit.dart';
 
 class NewsListScreen extends StatefulWidget {
   final StoriesBloc _bloc;
@@ -25,6 +28,7 @@ class _NewsListScreenState extends State<NewsListScreen>
   TabController _controller;
   ScrollController _scrollController;
   List<Widget> _tabs = [];
+
   @override
   void initState() {
     widget._bloc.fetchListIds(TypeOfList.values[0]);
@@ -92,19 +96,19 @@ class _NewsListScreenState extends State<NewsListScreen>
                 "The hackerNews",
                 style: TextStyle(fontSize: 25),
               ),
+              actions: <Widget>[
+                GoToSubmitButton(),
+                LogInButton(),
+              ],
               pinned: true,
               floating: true,
               forceElevated: isScrolled,
               bottom: TabBar(
-                  labelStyle: TextStyle(
+                  labelStyle: GoogleFonts.merriweather(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
-                    fontFamily: "Merriweather",
                   ),
-                  unselectedLabelStyle: TextStyle(
-                    fontSize: 14,
-                    fontFamily: "Merriweather",
-                  ),
+                  unselectedLabelStyle: GoogleFonts.merriweather(fontSize: 14),
                   isScrollable: true,
                   controller: _controller,
                   tabs: _tabs),

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 
 import '../../mixins/date_mixin.dart';
 import '../../blocs/stories_provider.dart';
 import '../../models/item_model.dart';
+import '../user_widgets/author_button.dart';
 import 'loading_list_tile.dart';
 
 class NewsListTile extends StatelessWidget with DateMixin {
@@ -49,6 +51,7 @@ class NewsListTile extends StatelessWidget with DateMixin {
           GestureDetector(
             onTap: () => Navigator.pushNamed(context, '/news/$itemId'),
             child: Container(
+              color: Colors.transparent,
               alignment: Alignment.centerLeft,
               padding: EdgeInsets.fromLTRB(10, 8, 10, 8),
               child: Column(
@@ -85,23 +88,16 @@ class NewsListTile extends StatelessWidget with DateMixin {
             height: 30,
             child: Row(
               children: <Widget>[
-                // Author
-                Text(
-                  "By: ${item.by}",
-                  style: TextStyle(color: Colors.grey[700]),
-                ),
+                AuthorButton(item.by, color: Colors.grey[700],),
                 Expanded(child: Container()),
-                // Comments count
+                // Score count
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Text(
                       "${item.score}",
-                      style: TextStyle(
-                        fontFamily: "OpenSans",
-                        color: Colors.grey[700],
-                      ),
+                      style: GoogleFonts.openSans().apply(color: Colors.grey[700]),
                     ),
                     item.score < 100
                         ? Icon(
@@ -126,10 +122,7 @@ class NewsListTile extends StatelessWidget with DateMixin {
                     children: <Widget>[
                       Text(
                         "${item.descendants}",
-                        style: TextStyle(
-                          fontFamily: "OpenSans",
-                          color: Colors.grey[700],
-                        ),
+                        style: GoogleFonts.openSans().apply(color: Colors.grey[700]),
                       ),
                       Icon(
                         OMIcons.forum,
