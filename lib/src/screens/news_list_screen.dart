@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../resources/list_type.dart';
 import '../blocs/stories_provider.dart';
@@ -103,15 +104,11 @@ class _NewsListScreenState extends State<NewsListScreen>
               floating: true,
               forceElevated: isScrolled,
               bottom: TabBar(
-                  labelStyle: TextStyle(
+                  labelStyle: GoogleFonts.merriweather(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
-                    fontFamily: "Merriweather",
                   ),
-                  unselectedLabelStyle: TextStyle(
-                    fontSize: 14,
-                    fontFamily: "Merriweather",
-                  ),
+                  unselectedLabelStyle: GoogleFonts.merriweather(fontSize: 14),
                   isScrollable: true,
                   controller: _controller,
                   tabs: _tabs),
