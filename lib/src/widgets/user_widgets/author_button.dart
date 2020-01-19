@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:hacker_news/src/blocs/user_provider.dart';
 
 class AuthorButton extends StatelessWidget {
+  const AuthorButton(this.author, {this.color = Colors.grey});
+
   final String author;
   final Color color;
-  AuthorButton(this.author,{this.color = Colors.grey});
 
   @override
   Widget build(BuildContext context) {
@@ -13,9 +14,9 @@ class AuthorButton extends StatelessWidget {
       userColor = Colors.teal;
     }
     return GestureDetector(
-      onTap: () => Navigator.pushNamed(context, "/user/$author"),
+      onTap: () => Navigator.pushNamed(context, '/user/$author'),
       child: Text(
-        "by: $author",
+        'by: $author',
         style: TextStyle(color: userColor),
       ),
     );

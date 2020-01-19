@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../../mixins/notification_mixin.dart';
 import '../../blocs/user_provider.dart';
+import '../../mixins/notification_mixin.dart';
 
 class LogInDialog extends StatefulWidget {
+  const LogInDialog();
+
   @override
   _LogInDialogState createState() => _LogInDialogState();
 }
@@ -12,8 +14,8 @@ class _LogInDialogState extends State<LogInDialog> with NotificationMixin {
   UserBloc bloc;
   final _formKey = GlobalKey<FormState>();
 
-  String _username = "";
-  String _password = "";
+  String _username = '';
+  String _password = '';
 
   String _errorText;
   double _offset = 0;
@@ -30,21 +32,21 @@ class _LogInDialogState extends State<LogInDialog> with NotificationMixin {
     return Dialog(
       child: Container(
         height: 260 + _offset,
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         child: Form(
           key: _formKey,
           child: Column(
             children: <Widget>[
-              Text("Log In",
+              Text('Log In',
                   style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
               // _username field
               TextFormField(
                 decoration: InputDecoration(
                   errorText: _errorText,
-                  labelText: "Username",
-                  hintText: "Username",
+                  labelText: 'Username',
+                  hintText: 'Username',
                 ),
-                onSaved: (value){
+                onSaved: (value) {
                   _username = value;
                 },
               ),
@@ -53,14 +55,16 @@ class _LogInDialogState extends State<LogInDialog> with NotificationMixin {
                 obscureText: true,
                 decoration: InputDecoration(
                   errorText: _errorText,
-                  labelText: "Password",
-                  hintText: "Password",
+                  labelText: 'Password',
+                  hintText: 'Password',
                 ),
-                onSaved: (value){
+                onSaved: (value) {
                   _password = value;
                 },
               ),
-              Padding(padding: EdgeInsets.only(top:20),),
+              const Padding(
+                padding: EdgeInsets.only(top: 20),
+              ),
               Row(
                 children: <Widget>[
                   Expanded(
@@ -68,13 +72,15 @@ class _LogInDialogState extends State<LogInDialog> with NotificationMixin {
                   ),
                   RaisedButton(
                     child: _loading
-                      ? Container(width: 10, height: 10, child: CircularProgressIndicator(),)
-                      : Text("Submit"),
+                        ? Container(
+                            width: 10,
+                            height: 10,
+                            child: const CircularProgressIndicator(),
+                          )
+                        : const Text('Submit'),
                     color: Colors.teal,
                     textColor: Colors.white,
-                    onPressed: _loading
-                              ? null
-                              : logIn,
+                    onPressed: _loading ? null : logIn,
                   )
                 ],
               )
@@ -91,20 +97,20 @@ class _LogInDialogState extends State<LogInDialog> with NotificationMixin {
     setState(() {
       _loading = true;
     });
-    var res = await bloc.setClientWithCredentials(_username, _password);
-    if( res != null ){
+    final res = await bloc.setClientWithCredentials(_username, _password);
+    if (res != null) {
       // if login was successful
       // returning to home page
       Navigator.of(context, rootNavigator: true).pop();
-      showFlushBar(context, "Logged in as $_username");
+      showFlushBar(context, 'Logged in as $_username');
       return;
     }
     // if login was not successful
     setState(() {
       _loading = false;
       _offset = 50;
-      _errorText = "Wrong credentials";
-      showFlushBar(context, "Wrong credentials",status: Status.warning);
+      _errorText = 'Wrong credentials';
+      showFlushBar(context, 'Wrong credentials', status: Status.warning);
     });
   }
 }

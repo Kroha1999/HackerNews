@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../resources/list_type.dart';
 import '../blocs/stories_provider.dart';
+import '../resources/list_type.dart';
 import '../widgets/news_list/news_list.dart';
-import '../widgets/user_widgets/login_button.dart';
 import '../widgets/user_widgets/go_to_submit.dart';
+import '../widgets/user_widgets/login_button.dart';
 
 class NewsListScreen extends StatefulWidget {
-  final StoriesBloc _bloc;
   // Bloc is passed as a parameter for 2 reasons:
   // 1. On passing bloc through provider we can use
   //    it only at build function which leads to longer
@@ -17,7 +16,9 @@ class NewsListScreen extends StatefulWidget {
   //    show proper page results (previoselly showed top
   //    stories results, as bloc was predefined onPageRouteGen
   //    calling fetchListIds for top stories)
-  NewsListScreen(this._bloc);
+  const NewsListScreen(this._bloc);
+
+  final StoriesBloc _bloc;
 
   @override
   _NewsListScreenState createState() => _NewsListScreenState();
@@ -27,7 +28,7 @@ class _NewsListScreenState extends State<NewsListScreen>
     with SingleTickerProviderStateMixin {
   TabController _controller;
   ScrollController _scrollController;
-  List<Widget> _tabs = [];
+  final List<Widget> _tabs = [];
 
   @override
   void initState() {
@@ -42,8 +43,8 @@ class _NewsListScreenState extends State<NewsListScreen>
           child: Text(
             category
                 .toString()
-                .replaceFirst("TypeOfList.", "")
-                .replaceFirst("Stories", "")
+                .replaceFirst('TypeOfList.', '')
+                .replaceFirst('Stories', '')
                 .toLowerCase(),
           ),
         ),
@@ -92,11 +93,11 @@ class _NewsListScreenState extends State<NewsListScreen>
         headerSliverBuilder: (context, bool isScrolled) {
           return <Widget>[
             SliverAppBar(
-              title: Text(
-                "The hackerNews",
+              title: const Text(
+                'The hackerNews',
                 style: TextStyle(fontSize: 25),
               ),
-              actions: <Widget>[
+              actions: const <Widget>[
                 GoToSubmitButton(),
                 LogInButton(),
               ],
@@ -119,7 +120,7 @@ class _NewsListScreenState extends State<NewsListScreen>
           color: Colors.grey[50],
           child: TabBarView(
             controller: _controller,
-            children: <Widget>[
+            children: const <Widget>[
               NewsList(TypeOfList.TopStories),
               NewsList(TypeOfList.NewStories),
               NewsList(TypeOfList.BestStories),

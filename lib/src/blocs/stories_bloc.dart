@@ -4,14 +4,24 @@ import '../models/item_model.dart';
 import '../resources/repository.dart';
 
 class StoriesBloc {
+  StoriesBloc() {
+    // This constructor is needed for transforming stream and
+    // to have the only one "cahce" instance from the transformer
+    // func. for each StreamBuilder in UI classes. In case we will
+    // apply this transformer to the topIds items we will create
+    // "cache" instance for each of streambuilder using the getter
+    _itemsFetcher.stream.transform(_itemsTransformer()).pipe(_itemsOutput);
+    _initIdsStreams();
+  }
+
   final _repository = Repository();
   // Subjects (PublishSubject, PublishSubject, ...) in RxDart ==
   // StreamController (+ couple of additional functions)
   // Observable in RxDart == Stream (+ couple of additional functions)
 
-  // List of streams for each of category which provides separate list 
+  // List of streams for each of category which provides separate list
   // for each newsList
-  final Map<TypeOfList,PublishSubject<List<int>>> listsIds = {};
+  final Map<TypeOfList, PublishSubject<List<int>>> listsIds = {};
   // items Streams => divided in input and output stream in order not to
   // duplicate events by transformer as output is listened by many widgets
   final _itemsOutput = BehaviorSubject<Map<int, Future<ItemModel>>>();
@@ -34,16 +44,6 @@ class StoriesBloc {
     _repository.clearCache();
   }
 
-  StoriesBloc() {
-    // This constructor is needed for transforming stream and
-    // to have the only one "cahce" instance from the transformer
-    // func. for each StreamBuilder in UI classes. In case we will
-    // apply this transformer to the topIds items we will create
-    // "cache" instance for each of streambuilder using the getter
-    _itemsFetcher.stream.transform(_itemsTransformer()).pipe(_itemsOutput);
-    _initIdsStreams();
-  }
-
   _itemsTransformer() {
     // cahce - previous map, id - id of event,
     // index - number of ScanStreamTransformer was called
@@ -56,14 +56,14 @@ class StoriesBloc {
     );
   }
 
-  _initIdsStreams(){
-    for (TypeOfList type in TypeOfList.values){
+  _initIdsStreams() {
+    for (TypeOfList type in TypeOfList.values) {
       listsIds[type] = PublishSubject<List<int>>();
     }
   }
 
-  _closeIdsStreams(){
-    listsIds.forEach((type,obs)=>obs.close());
+  _closeIdsStreams() {
+    listsIds.forEach((type, obs) => obs.close());
   }
 
   dispose() {

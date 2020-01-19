@@ -2,16 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 
+import '../../mixins/date_mixin.dart';
+import '../../mixins/url_mixin.dart';
+import '../../models/item_model.dart';
 import '../../widgets/user_widgets/author_button.dart';
 import '../../widgets/user_widgets/comment_button.dart';
 import '../../widgets/user_widgets/vote_button.dart';
-import '../../mixins/url_mixin.dart';
-import '../../mixins/date_mixin.dart';
-import '../../models/item_model.dart';
 
 class NewsContainer extends StatelessWidget with UrlMixin, DateMixin {
+  const NewsContainer({@required this.item});
+
   final ItemModel item;
-  NewsContainer({@required this.item});
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +25,7 @@ class NewsContainer extends StatelessWidget with UrlMixin, DateMixin {
                 flex: 6,
                 child: Container(
                   alignment: Alignment.topLeft,
-                  padding: EdgeInsets.all(15),
+                  padding: const EdgeInsets.all(15),
                   child: Text(
                     item.title,
                     maxLines: 5,
@@ -46,18 +47,18 @@ class NewsContainer extends StatelessWidget with UrlMixin, DateMixin {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  VoteButton(30),
-                  SizedBox(
+                  const VoteButton(30),
+                  const SizedBox(
                     width: 30,
                   ),
                   IconButton(
                     iconSize: 50,
                     icon: Icon(Icons.launch),
-                    onPressed: item.url == "" || item.url == null
+                    onPressed: item.url == '' || item.url == null
                         ? null
                         : () => launchURL(item.url),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 30,
                   ),
                   CommentButton(30, item),
@@ -65,15 +66,15 @@ class NewsContainer extends StatelessWidget with UrlMixin, DateMixin {
               ),
               Center(
                 child: Padding(
-                  padding: EdgeInsets.only(
+                  padding: const EdgeInsets.only(
                     left: 30,
                     right: 30,
                     bottom: 10,
                     top: 0,
                   ),
                   child: Text(
-                    "${item.url}",
-                    style: TextStyle(fontSize: 12, color: Colors.grey),
+                    '${item.url}',
+                    style: const TextStyle(fontSize: 12, color: Colors.grey),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -84,14 +85,14 @@ class NewsContainer extends StatelessWidget with UrlMixin, DateMixin {
           //Bottom line
           Row(
             children: <Widget>[
-              Padding(padding: EdgeInsets.only(left: 10)),
+              const Padding(padding: EdgeInsets.only(left: 10)),
               AuthorButton(
                 item.by,
                 color: Colors.black,
               ),
               Text(
-                " ~ ${timeAgo(item.time)}",
-                style: TextStyle(color: Colors.grey),
+                ' ~ ${timeAgo(item.time)}',
+                style: const TextStyle(color: Colors.grey),
               ),
               Expanded(child: Container()),
               item.score < 100
@@ -109,7 +110,7 @@ class NewsContainer extends StatelessWidget with UrlMixin, DateMixin {
                 '${item.score}',
                 style: GoogleFonts.openSans(),
               ),
-              Padding(padding: EdgeInsets.only(right: 5)),
+              const Padding(padding: EdgeInsets.only(right: 5)),
               Icon(
                 OMIcons.forum,
                 color: Colors.teal,
@@ -118,7 +119,7 @@ class NewsContainer extends StatelessWidget with UrlMixin, DateMixin {
                 '${item.descendants}',
                 style: GoogleFonts.openSans(),
               ),
-              Padding(padding: EdgeInsets.only(right: 10)),
+              const Padding(padding: EdgeInsets.only(right: 10)),
             ],
           ),
         ],

@@ -6,8 +6,9 @@ import '../../blocs/comments_provider.dart';
 import '../../models/item_model.dart';
 
 class NewsDetailsBody extends StatelessWidget {
+  const NewsDetailsBody({@required this.itemId});
+
   final int itemId;
-  NewsDetailsBody({@required this.itemId});
   @override
   Widget build(BuildContext context) {
     final bloc = CommentsProvider.of(context);
@@ -19,7 +20,7 @@ class NewsDetailsBody extends StatelessWidget {
             child: Container(
               width: 50,
               height: 50,
-              child: CircularProgressIndicator(),
+              child: const CircularProgressIndicator(),
             ),
           );
         }
@@ -28,7 +29,7 @@ class NewsDetailsBody extends StatelessWidget {
           future: itemFuture,
           builder: (context, AsyncSnapshot<ItemModel> itemSnapshot) {
             if (!itemSnapshot.hasData) {
-              return Center(
+              return const Center(
                 child: LoadingListTile(),
               );
             }

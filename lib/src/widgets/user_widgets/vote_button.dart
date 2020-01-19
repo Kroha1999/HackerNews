@@ -5,11 +5,12 @@ import '../../blocs/user_provider.dart';
 import '../../models/vote.dart';
 
 class VoteButton extends StatelessWidget {
+  const VoteButton(this.size);
+
   final double size;
-  VoteButton(this.size);
   @override
   Widget build(BuildContext context) {
-    var bloc = UserProvider.of(context);
+    final bloc = UserProvider.of(context);
     return StreamBuilder<Object>(
       stream: bloc.clientState,
       builder: (context, snapshot) {
@@ -19,20 +20,20 @@ class VoteButton extends StatelessWidget {
         // if user logged in
         if (snapshot.data) {
           return Container(
-            margin: EdgeInsets.all(size/6),
-            width: size+10,
-            height: size+15,
+            margin: EdgeInsets.all(size / 6),
+            width: size + 10,
+            height: size + 15,
             child: StreamBuilder(
               stream: bloc.voteState,
               builder: (context, AsyncSnapshot<Vote> snapshot) {
-                if (!snapshot.hasData || (snapshot.data==null)) {
+                if (!snapshot.hasData || (snapshot.data == null)) {
                   return IconButton(
                     icon: Icon(
                       OMIcons.thumbUp,
                       size: size,
                       color: Colors.grey,
                     ),
-                    tooltip: "loading",
+                    tooltip: 'loading',
                     onPressed: null,
                   );
                 }
@@ -42,7 +43,7 @@ class VoteButton extends StatelessWidget {
                       Icons.thumb_up,
                       size: size,
                     ),
-                    tooltip: "unvote",
+                    tooltip: 'unvote',
                     onPressed: () => bloc.toogleVote(snapshot.data),
                   );
                 }
@@ -51,7 +52,7 @@ class VoteButton extends StatelessWidget {
                     OMIcons.thumbUp,
                     size: size,
                   ),
-                  tooltip: "upvote",
+                  tooltip: 'upvote',
                   onPressed: () => bloc.toogleVote(snapshot.data),
                 );
               },
@@ -62,6 +63,4 @@ class VoteButton extends StatelessWidget {
       },
     );
   }
-
-
 }

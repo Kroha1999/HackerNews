@@ -2,23 +2,22 @@ import 'dart:async';
 
 import 'package:rxdart/rxdart.dart';
 
-import '../models/vote.dart';
 import '../models/user.dart';
+import '../models/vote.dart';
 import '../resources/repository.dart';
 import '../resources/unofficial_api/hacker_news_client.dart';
 
 class UserBloc {
-  Repository _repository = Repository();
-  NewsApiClient _client;
-
   UserBloc() {
     _getClientFromDb();
   }
-
   // [true] if registred [false] if not
   final _clientState = BehaviorSubject<bool>();
-  final _votes = BehaviorSubject<Vote>();
   final _users = BehaviorSubject<String>();
+  final _votes = BehaviorSubject<Vote>();
+  final _repository = Repository();
+
+  NewsApiClient _client;
 
   // getters Streams
   Observable<bool> get clientState => _clientState.stream;
@@ -33,7 +32,7 @@ class UserBloc {
 
   /// Returns [null] not successful login else [NewsApiClient] instance
   setClientWithCredentials(String username, String password) async {
-    var client = await NewsApiClient.logIn(username, password);
+    final client = await NewsApiClient.logIn(username, password);
     if (client != null) {
       _client = client;
       // saving user to DB
@@ -66,7 +65,7 @@ class UserBloc {
     clientState.listen((logged) async {
       if (logged && _client != null) {
         _votes.sink.add(null);
-        var vote = await _client.getVote(id);
+        final vote = await _client.getVote(id);
         _votes.sink.add(vote);
       }
     });
@@ -76,7 +75,7 @@ class UserBloc {
     // putting vote button to inactive state
     _votes.sink.add(null);
     // wait half a secod is much more efficient then to make another http request
-    await Future.delayed(Duration(milliseconds: 600));
+    await Future.delayed(const Duration(milliseconds: 600));
     // add to a sink updated vote
     _votes.sink.add(_client.toogleVote(vote));
   }
@@ -98,7 +97,7 @@ class UserBloc {
   // Transformers
   var usernameToUser = StreamTransformer<String, User>.fromHandlers(
       handleData: (String username, EventSink<User> sink) async {
-    User user = await NewsApiClient.getUserWithUsername(username);
+    final User user = await NewsApiClient.getUserWithUsername(username);
     sink.add(user);
   });
 

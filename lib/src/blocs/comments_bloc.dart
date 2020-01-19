@@ -4,6 +4,12 @@ import '../models/item_model.dart';
 import '../resources/repository.dart';
 
 class CommentsBloc {
+  CommentsBloc() {
+    _commentsFetcher.stream
+        .transform(_commentsTransformer())
+        .pipe(_commentsOutput);
+  }
+
   final _repository = Repository();
   final _commentsFetcher = PublishSubject<int>();
   final _commentsOutput = BehaviorSubject<Map<int, Future<ItemModel>>>();
@@ -14,12 +20,6 @@ class CommentsBloc {
 
   // Stream adders
   Function(int) get fetchItemWithComments => _commentsFetcher.sink.add;
-
-  CommentsBloc() {
-    _commentsFetcher.stream
-        .transform(_commentsTransformer())
-        .pipe(_commentsOutput);
-  }
 
   // Recursive transformer that fetches kids (comments)
   // waits for comments to load, then looks for
@@ -33,9 +33,9 @@ class CommentsBloc {
         // information about comment and for it's
         // subcomments, until we reach empty list
         cache[id].then((ItemModel item) {
-          for (var kidId in item.kids) {
+          item.kids.forEach((kidId) {
             fetchItemWithComments(kidId);
-          }
+          });
         });
         return cache;
       },

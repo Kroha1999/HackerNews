@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import '../widgets/news_details/news_details_body.dart';
 
-class NewsDetailsScreen extends StatelessWidget {  
+class NewsDetailsScreen extends StatelessWidget {
+  const NewsDetailsScreen({@required this.itemId});
+
   final int itemId;
-  NewsDetailsScreen({@required this.itemId});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Event details"),
+        title: const Text('Event details'),
       ),
-      body: NewsDetailsBody(itemId:itemId),
+      body: NewsDetailsBody(itemId: itemId),
     );
   }
 }

@@ -1,31 +1,30 @@
-import 'dart:io';
 import 'dart:async';
 
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 
-import "unofficial_api/hacker_news_client.dart";
 import '../models/item_model.dart';
 import 'data_provider.dart';
+import 'unofficial_api/hacker_news_client.dart';
 
 class NewsDbProvider implements Source, Cache {
-  Database _db;
-
   NewsDbProvider() {
     init();
   }
 
-  void init() async {
-    Directory documentsDirectory = await getApplicationDocumentsDirectory();
-    final path = join(documentsDirectory.path, "items.db");
+  Database _db;
+
+  Future<Database> init() async {
+    final documentsDirectory = await getApplicationDocumentsDirectory();
+    final path = join(documentsDirectory.path, 'items.db');
     _db = await openDatabase(
       path,
       version: 1,
       onCreate: (Database newDb, int version) async {
         // bool are represented as INTEGER
         // list<int> is represented as BLOB -> decode must be done
-        newDb.execute("""
+        newDb.execute('''
           CREATE TABLE Items
             (
               id INTEGER PRIMARY KEY,
@@ -42,24 +41,26 @@ class NewsDbProvider implements Source, Cache {
               title TEXT,
               descendants INTEGER
             )
-        """);
-        newDb.execute("""
+        ''');
+        newDb.execute('''
           CREATE TABLE Client
             (
               id INTEGER PRIMARY KEY,
               username TEXT,
               client TEXT
             )
-        """);
+        ''');
       },
     );
+    return _db;
   }
 
   Future<bool> isDbLoaded() async {
     int i = 0;
     while (i < 20) {
       if (_db != null) return true;
-      await Future.delayed(Duration(milliseconds: 200));
+      await Future.delayed(const Duration(milliseconds: 200));
+      i++;
     }
     return false;
   }
@@ -67,12 +68,12 @@ class NewsDbProvider implements Source, Cache {
   // by default user will be written to id = 0
   Future<NewsApiClient> fetchClient({int id = 0}) async {
     final maps = await _db.query(
-      "Client",
+      'Client',
       columns: null,
-      where: "id = ?",
+      where: 'id = ?',
       whereArgs: [id],
     );
-    if (maps.length > 0) {
+    if (maps.isNotEmpty) {
       if (maps[0]['client'] != '') {
         return NewsApiClient.fromCookieString(
             maps[0]['username'], maps[0]['client']);
@@ -83,46 +84,50 @@ class NewsDbProvider implements Source, Cache {
 
   Future<int> setClient(NewsApiClient client) {
     return _db.insert(
-      "Client",
+      'Client',
       client.toMapDb(),
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
   }
 
   Future<int> clearClient() {
-    return _db.delete("Client");
+    return _db.delete('Client');
   }
 
-  // TODO: store TopIds
+  // TODO(Bodka): store TopIds
+  @override
   Future<List<int>> fetchListIds(type) {
     return null;
   }
 
+  @override
   Future<ItemModel> fetchItem(int id) async {
     final maps = await _db.query(
-      "Items",
+      'Items',
       columns: null,
-      where: "id = ?",
+      where: 'id = ?',
       whereArgs: [id],
     );
 
-    if (maps.length > 0) {
+    if (maps.isNotEmpty) {
       return ItemModel.fromDb(maps[0]);
     }
 
     return null;
   }
 
+  @override
   Future<int> addItem(ItemModel item) {
     return _db.insert(
-      "Items",
+      'Items',
       item.toMapDb(),
       conflictAlgorithm: ConflictAlgorithm.ignore,
     );
   }
 
+  @override
   Future<int> clear() {
-    return _db.delete("Items");
+    return _db.delete('Items');
   }
 }
 

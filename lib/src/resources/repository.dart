@@ -1,31 +1,31 @@
 import 'dart:async';
 
+import 'package:http/http.dart' show Client;
 
+import '../models/item_model.dart';
 import 'data_provider.dart';
 import 'list_type.dart';
 import 'news_api_provider.dart';
 import 'news_db_provider.dart';
 import 'unofficial_api/hacker_news_client.dart';
-import '../models/item_model.dart';
 
 export 'list_type.dart';
 
 class Repository {
-  List<Source> _sources = <Source>[
+  final _sources = <Source>[
     newsDbProvider,
-    NewsApiProvider(),
+    NewsApiProvider(Client()),
   ];
 
-  List<Cache> _caches = <Cache>[
+  final _caches = <Cache>[
     newsDbProvider,
   ];
-  
 
-  Future<NewsApiClient> fetchClient(){
+  Future<NewsApiClient> fetchClient() {
     return newsDbProvider.fetchClient();
   }
 
-  Future<int> setClient(NewsApiClient client){
+  Future<int> setClient(NewsApiClient client) {
     return newsDbProvider.setClient(client);
   }
 
@@ -33,11 +33,11 @@ class Repository {
     return newsDbProvider.clearClient();
   }
 
-  Future<bool> isDbLoaded(){
+  Future<bool> isDbLoaded() {
     return newsDbProvider.isDbLoaded();
   }
 
-  // TODO: Iterate throught _sources and fetch top Ids
+  // TODO(Bodka): Iterate throught _sources and fetch top Ids
   // Implement Db source
   Future<List<int>> fetchListIds(TypeOfList type) async {
     return _sources[1].fetchListIds(type);
@@ -64,7 +64,7 @@ class Repository {
   }
 
   clearCache() async {
-    for(var cache in _caches) {
+    for (var cache in _caches) {
       await cache.clear();
     }
   }

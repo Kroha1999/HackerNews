@@ -7,16 +7,16 @@ import '../../mixins/url_mixin.dart';
 import '../../models/user.dart';
 import '../../widgets/user_widgets/logout_button.dart';
 
-class UserDetails extends StatelessWidget with UrlMixin{
-  final User user;
-  UserDetails(this.user);
+class UserDetails extends StatelessWidget with UrlMixin {
+  const UserDetails(this.user);
 
-  final style = GoogleFonts.openSans(fontSize: 20);
+  final User user;
+
   @override
   Widget build(BuildContext context) {
-    UserBloc bloc = UserProvider.of(context);
+    final bloc = UserProvider.of(context);
     return Container(
-      padding: EdgeInsets.all(15),
+      padding: const EdgeInsets.all(15),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -25,23 +25,23 @@ class UserDetails extends StatelessWidget with UrlMixin{
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  "User: ${user.userId}",
-                  style: style,
+                  'User: ${user.userId}',
+                  style: GoogleFonts.openSans(fontSize: 20),
                 ),
                 Text(
-                  "Created: ${user.created}",
-                  style: style,
+                  'Created: ${user.created}',
+                  style: GoogleFonts.openSans(fontSize: 20),
                 ),
                 Text(
-                  "Karma: ${user.karma}",
-                  style: style,
+                  'Karma: ${user.karma}',
+                  style: GoogleFonts.openSans(fontSize: 20),
                 ),
                 Text(
-                  "About: ",
-                  style: style,
+                  'About: ',
+                  style: GoogleFonts.openSans(fontSize: 20),
                 ),
                 Html(
-                  defaultTextStyle: style,
+                  defaultTextStyle: GoogleFonts.openSans(fontSize: 20),
                   data: user.about,
                   onLinkTap: (link) => launchURL(link),
                 ),
@@ -51,7 +51,9 @@ class UserDetails extends StatelessWidget with UrlMixin{
           Expanded(
             child: Container(),
           ),
-          user.userId == bloc.currentUserName ? LogOutButton() : Container(),
+          user.userId == bloc.currentUserName
+              ? const LogOutButton()
+              : Container(),
         ],
       ),
     );

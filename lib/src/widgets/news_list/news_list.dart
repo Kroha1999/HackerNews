@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 
-import '../../resources/list_type.dart';
 import '../../blocs/stories_provider.dart';
+import '../../resources/list_type.dart';
 import 'news_list_tile.dart';
 import 'refresh_indicator.dart';
 
 class NewsList extends StatelessWidget {
+  const NewsList(this._type);
+
   final TypeOfList _type;
-  NewsList(this._type);
+
   @override
   Widget build(BuildContext context) {
     final bloc = StoriesProvider.of(context);
@@ -18,7 +20,7 @@ class NewsList extends StatelessWidget {
         if (!snapshot.hasData) {
           return Center(
             child: Container(
-              child: CircularProgressIndicator(),
+              child: const CircularProgressIndicator(),
               height: 25,
               width: 25,
             ),
@@ -27,7 +29,7 @@ class NewsList extends StatelessWidget {
 
         return Refresh(
           ListView.builder(
-            physics: AlwaysScrollableScrollPhysics(),
+            physics: const AlwaysScrollableScrollPhysics(),
             itemCount: snapshot.data.length,
             itemBuilder: (context, int index) {
               // Fetches data for each separate item

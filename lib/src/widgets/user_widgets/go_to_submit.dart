@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import '../../blocs/user_provider.dart';
 
 class GoToSubmitButton extends StatelessWidget {
+  const GoToSubmitButton();
+
   @override
   Widget build(BuildContext context) {
-    UserBloc bloc = UserProvider.of(context);
+    final bloc = UserProvider.of(context);
 
     return Container(
       width: 50,
@@ -19,9 +21,9 @@ class GoToSubmitButton extends StatelessWidget {
 
           if (snapshot.data) {
             return IconButton(
-              tooltip: "submit",
+              tooltip: 'submit',
               icon: Icon(Icons.chat_bubble_outline),
-              onPressed: () => Navigator.pushNamed(context, "/submit"),
+              onPressed: () => Navigator.pushNamed(context, '/submit'),
             );
           }
 

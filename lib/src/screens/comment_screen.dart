@@ -8,16 +8,18 @@ import '../widgets/user_widgets/comment_form.dart';
 /// replyItem - [ItemModel] that must be replied,
 /// parent - The very top parent in the hierarchy [ItemModel]
 class CommentScreen extends StatelessWidget {
+  const CommentScreen();
+
   @override
   Widget build(BuildContext context) {
     final bloc = CommentsProvider.of(context);
     final ItemModel replyItem = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Comment'),
+        title: const Text('Comment'),
       ),
       body: Container(
-        padding: EdgeInsets.all(8),
+        padding: const EdgeInsets.all(8),
         child: ListView(
           children: <Widget>[
             Text(
@@ -25,7 +27,7 @@ class CommentScreen extends StatelessWidget {
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             Html(data: replyItem.text),
-            Divider(),
+            const Divider(),
             CommentForm(replyItem),
           ],
         ),

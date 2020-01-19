@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
 class LoadingListTile extends StatelessWidget {
+  const LoadingListTile();
+
   @override
   Widget build(BuildContext context) {
     return Card(
       color: Colors.grey[50],
-      margin: EdgeInsets.only(
+      margin: const EdgeInsets.only(
         left: 8,
         right: 8,
         bottom: 10,
@@ -16,7 +18,7 @@ class LoadingListTile extends StatelessWidget {
           Container(
             height: 75,
             alignment: Alignment.centerLeft,
-            padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+            padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -26,12 +28,12 @@ class LoadingListTile extends StatelessWidget {
               ],
             ),
           ),
-          Divider(
+          const Divider(
             height: 4,
             thickness: 0.6,
           ),
           Container(
-            padding: EdgeInsets.fromLTRB(10, 2, 10, 2),
+            padding: const EdgeInsets.fromLTRB(10, 2, 10, 2),
             height: 30,
             child: Row(
               children: <Widget>[
@@ -51,7 +53,7 @@ class LoadingListTile extends StatelessWidget {
       color: Colors.black12,
       height: height,
       width: width,
-      margin: EdgeInsets.only(
+      margin: const EdgeInsets.only(
         top: 5.0,
         bottom: 5.0,
       ),

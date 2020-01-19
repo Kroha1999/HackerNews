@@ -5,8 +5,10 @@ import '../../mixins/notification_mixin.dart';
 import '../../models/item_model.dart';
 
 class CommentForm extends StatefulWidget {
+  const CommentForm(this.parent);
+
   final ItemModel parent;
-  CommentForm(this.parent);
+
   @override
   _CommentFormState createState() => _CommentFormState();
 }
@@ -23,8 +25,8 @@ class _CommentFormState extends State<CommentForm> with NotificationMixin {
         Form(
           key: _formKey,
           child: TextFormField(
-            decoration: InputDecoration(
-              hintText: "Comment",
+            decoration: const InputDecoration(
+              hintText: 'Comment',
             ),
             maxLines: null,
             onSaved: (str) {
@@ -38,16 +40,21 @@ class _CommentFormState extends State<CommentForm> with NotificationMixin {
             },
           ),
         ),
-        Padding(padding: EdgeInsets.only(top: 10),),
+        const Padding(
+          padding: EdgeInsets.only(top: 10),
+        ),
         RaisedButton(
           color: Colors.teal,
           child: loading
               ? Container(
                   width: 10,
                   height: 10,
-                  child: CircularProgressIndicator(),
+                  child: const CircularProgressIndicator(),
                 )
-              : Text("Post comment",style: TextStyle(color: Colors.white,fontSize: 20),),
+              : Text(
+                  'Post comment',
+                  style: TextStyle(color: Colors.white, fontSize: 20),
+                ),
           onPressed: loading ? null : () => comment(context, bloc),
         )
       ],
@@ -61,12 +68,12 @@ class _CommentFormState extends State<CommentForm> with NotificationMixin {
         loading = true;
       });
 
-      bool submited = await bloc.submitComment(text, widget.parent.id);
+      final submited = await bloc.submitComment(text, widget.parent.id);
       if (submited) {
         Navigator.pop(context);
-        showFlushBar(context, "Success!");
+        showFlushBar(context, 'Success!');
       } else {
-        showFlushBar(context, "Something went wrong!", status: Status.warning);
+        showFlushBar(context, 'Something went wrong!', status: Status.warning);
       }
       setState(() {
         loading = false;

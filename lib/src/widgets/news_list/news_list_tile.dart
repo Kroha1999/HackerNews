@@ -2,15 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:outline_material_icons/outline_material_icons.dart';
 
-import '../../mixins/date_mixin.dart';
 import '../../blocs/stories_provider.dart';
+import '../../mixins/date_mixin.dart';
 import '../../models/item_model.dart';
 import '../user_widgets/author_button.dart';
 import 'loading_list_tile.dart';
 
 class NewsListTile extends StatelessWidget with DateMixin {
+  const NewsListTile({this.itemId});
+
   final int itemId;
-  NewsListTile({this.itemId});
 
   @override
   Widget build(BuildContext context) {
@@ -20,15 +21,15 @@ class NewsListTile extends StatelessWidget with DateMixin {
       builder: (context,
           AsyncSnapshot<Map<int, Future<ItemModel>>> itemsMapSnapshot) {
         if (!itemsMapSnapshot.hasData) {
-          return LoadingListTile();
+          return const LoadingListTile();
         }
         return FutureBuilder(
           future: itemsMapSnapshot.data[itemId],
           builder: (context, AsyncSnapshot<ItemModel> itemSnapshot) {
             if (!itemSnapshot.hasData) {
-              return LoadingListTile();
+              return const LoadingListTile();
             }
-            ItemModel item = itemSnapshot.data;
+            final item = itemSnapshot.data;
             // UI represantation
             return buildWidget(item, context);
           },
@@ -40,7 +41,7 @@ class NewsListTile extends StatelessWidget with DateMixin {
   Widget buildWidget(ItemModel item, context) {
     return Card(
       key: Key(item.id.toString()),
-      margin: EdgeInsets.only(
+      margin: const EdgeInsets.only(
         left: 8,
         right: 8,
         bottom: 10,
@@ -53,7 +54,7 @@ class NewsListTile extends StatelessWidget with DateMixin {
             child: Container(
               color: Colors.transparent,
               alignment: Alignment.centerLeft,
-              padding: EdgeInsets.fromLTRB(10, 8, 10, 8),
+              padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -64,11 +65,11 @@ class NewsListTile extends StatelessWidget with DateMixin {
                     overflow: TextOverflow.ellipsis,
                     maxLines: 2,
                     textAlign: TextAlign.left,
-                    style: TextStyle(fontSize: 22),
+                    style: const TextStyle(fontSize: 22),
                   ),
                   // Time ago
                   Text(
-                    "${timeAgo(item.time)}",
+                    '${timeAgo(item.time)}',
                     textAlign: TextAlign.end,
                     style: TextStyle(
                       color: Colors.grey[400],
@@ -79,16 +80,19 @@ class NewsListTile extends StatelessWidget with DateMixin {
               ),
             ),
           ),
-          Divider(
+          const Divider(
             height: 4,
             thickness: 0.6,
           ),
           Container(
-            padding: EdgeInsets.fromLTRB(10, 2, 10, 2),
+            padding: const EdgeInsets.fromLTRB(10, 2, 10, 2),
             height: 30,
             child: Row(
               children: <Widget>[
-                AuthorButton(item.by, color: Colors.grey[700],),
+                AuthorButton(
+                  item.by,
+                  color: Colors.grey[700],
+                ),
                 Expanded(child: Container()),
                 // Score count
                 Row(
@@ -96,8 +100,9 @@ class NewsListTile extends StatelessWidget with DateMixin {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Text(
-                      "${item.score}",
-                      style: GoogleFonts.openSans().apply(color: Colors.grey[700]),
+                      '${item.score}',
+                      style:
+                          GoogleFonts.openSans().apply(color: Colors.grey[700]),
                     ),
                     item.score < 100
                         ? Icon(
@@ -121,8 +126,9 @@ class NewsListTile extends StatelessWidget with DateMixin {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                        "${item.descendants}",
-                        style: GoogleFonts.openSans().apply(color: Colors.grey[700]),
+                        '${item.descendants}',
+                        style: GoogleFonts.openSans()
+                            .apply(color: Colors.grey[700]),
                       ),
                       Icon(
                         OMIcons.forum,

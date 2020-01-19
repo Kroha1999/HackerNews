@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
-import 'login_dialog.dart';
 import '../../blocs/user_provider.dart';
+import 'login_dialog.dart';
 
 class LogInButton extends StatelessWidget {
+  const LogInButton();
+
   @override
   Widget build(BuildContext context) {
-    UserBloc bloc = UserProvider.of(context);
+    final bloc = UserProvider.of(context);
 
     return Container(
       width: 50,
@@ -24,14 +26,14 @@ class LogInButton extends StatelessWidget {
           if (snapshot.data) {
             return IconButton(
               icon: Icon(Icons.verified_user),
-              tooltip: "current user",
+              tooltip: 'current user',
               onPressed: () => showAuthorPage(context, bloc),
             );
           }
 
           return IconButton(
             icon: Icon(Icons.account_circle),
-            tooltip: "log in",
+            tooltip: 'log in',
             onPressed: () => showLoginDialog(context),
           );
         },
@@ -40,14 +42,14 @@ class LogInButton extends StatelessWidget {
   }
 
   showAuthorPage(BuildContext context, UserBloc bloc) {
-    Navigator.pushNamed(context, "/user/${bloc.currentUserName}");
+    Navigator.pushNamed(context, '/user/${bloc.currentUserName}');
   }
 
   showLoginDialog(BuildContext context) {
     showDialog(
         context: context,
         builder: (context) {
-          return LogInDialog();
+          return const LogInDialog();
         });
   }
 }

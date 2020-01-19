@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'screens/submit_screen.dart';
-import 'screens/author_screen.dart';
-import 'screens/news_list_screen.dart';
-import 'screens/news_details_screen.dart';
-import 'blocs/stories_provider.dart';
 import 'blocs/comments_provider.dart';
+import 'blocs/stories_provider.dart';
 import 'blocs/user_provider.dart';
+import 'screens/author_screen.dart';
+import 'screens/news_details_screen.dart';
+import 'screens/news_list_screen.dart';
+import 'screens/submit_screen.dart';
 
 class App extends StatelessWidget {
-  
+  const App();
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context).textTheme;
@@ -21,9 +22,10 @@ class App extends StatelessWidget {
             theme: ThemeData(
               primarySwatch: Colors.teal,
               textTheme: GoogleFonts.merriweatherTextTheme(theme),
-              primaryTextTheme: GoogleFonts.merriweatherTextTheme(theme).apply(bodyColor: Colors.white),
+              primaryTextTheme: GoogleFonts.merriweatherTextTheme(theme)
+                  .apply(bodyColor: Colors.white),
             ),
-            title: "Hacker News",
+            title: 'Hacker News',
             onGenerateRoute: routes,
           ),
         ),
@@ -34,9 +36,9 @@ class App extends StatelessWidget {
   Route routes(RouteSettings settings) {
     if (settings.name.length > 6) {
       // Submit news screen
-      if (settings.name == "/submit") {
+      if (settings.name == '/submit') {
         return MaterialPageRoute(builder: (context) {
-          return SubmitScreen();
+          return const SubmitScreen();
         });
       }
       // NewsDetails route with specific [id]
@@ -60,7 +62,7 @@ class App extends StatelessWidget {
             final userBloc = UserProvider.of(context);
             final author = settings.name.substring(6);
             userBloc.userSink.add(author);
-            return AuthorScreen();
+            return const AuthorScreen();
           },
         );
       }

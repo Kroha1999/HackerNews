@@ -15,11 +15,11 @@ class ReplyButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return FlatButton(
       shape: RoundedRectangleBorder(
-        borderRadius: new BorderRadius.circular(12.0),
+        borderRadius: BorderRadius.circular(12.0),
       ),
       color: Colors.grey[400],
       child: Text(
-        "Reply",
+        'Reply',
         style: TextStyle(color: Colors.white, fontSize: 12),
       ),
       onPressed: () {
@@ -27,7 +27,7 @@ class ReplyButton extends StatelessWidget {
           context,
           MaterialPageRoute(
               builder: (context) {
-                return CommentScreen();
+                return const CommentScreen();
               },
               settings: RouteSettings(
                 arguments: item,

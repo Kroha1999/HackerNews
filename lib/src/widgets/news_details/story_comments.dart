@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 
 import '../../blocs/user_provider.dart';
-import '../../widgets/user_widgets/reply_button.dart';
 import '../../mixins/date_mixin.dart';
 import '../../mixins/url_mixin.dart';
 import '../../models/item_model.dart';
+import '../../widgets/user_widgets/reply_button.dart';
 import '../news_list/loading_list_tile.dart';
 import '../user_widgets/author_button.dart';
 
@@ -20,12 +20,16 @@ List<MaterialColor> cols = [
 ];
 
 class Comment extends StatelessWidget with UrlMixin, DateMixin {
+  const Comment({
+    @required this.map,
+    @required this.commentId,
+    @required this.indent,
+  });
+
   final Map<int, Future<ItemModel>> map;
   final int commentId;
   // Moves child comments depending on it's indent (0 - parent comment)
   final int indent;
-  Comment(
-      {@required this.map, @required this.commentId, @required this.indent});
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +38,7 @@ class Comment extends StatelessWidget with UrlMixin, DateMixin {
       future: map[commentId],
       builder: (context, AsyncSnapshot<ItemModel> snapshot) {
         if (!snapshot.hasData) {
-          return LoadingListTile();
+          return const LoadingListTile();
         }
         final item = snapshot.data;
 
@@ -70,7 +74,7 @@ class Comment extends StatelessWidget with UrlMixin, DateMixin {
                   onLinkTap: (link) => launchURL(link),
                 ),
                 subtitle: item.deleted
-                    ? Text("Deleted")
+                    ? const Text('Deleted')
                     : Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
@@ -93,7 +97,7 @@ class Comment extends StatelessWidget with UrlMixin, DateMixin {
                               }
                               if (snapshot.data && !item.deleted) {
                                 return Container(
-                                  margin: EdgeInsets.only(top: 5),
+                                  margin: const EdgeInsets.only(top: 5),
                                   height: 20,
                                   width: 70,
                                   child: ReplyButton(item: item),

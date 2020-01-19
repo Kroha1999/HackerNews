@@ -6,5 +6,5 @@ import 'src/app.dart';
 void main() {
   debugPaintSizeEnabled = false;
 
-  runApp(App());
+  runApp(const App());
 }
