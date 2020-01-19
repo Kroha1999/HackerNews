@@ -15,7 +15,8 @@ class Refresh extends StatelessWidget {
     return RefreshIndicator(
       child: child,
       onRefresh: () async {
-        await bloc.clearCache();
+        // TODO(bodka): clear cahce
+        // await bloc.clearCache();
         bloc.fetchListIds(type);
 
         // Delayed just for better UX as fetching data takes too little time and

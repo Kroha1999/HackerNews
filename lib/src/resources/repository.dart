@@ -13,13 +13,13 @@ export 'list_type.dart';
 
 class Repository {
   final _sources = <Source>[
-    newsDbProvider,
+    // newsDbProvider,
     NewsApiProvider(Client()),
   ];
 
-  final _caches = <Cache>[
-    newsDbProvider,
-  ];
+  // final _caches = <Cache>[
+  //   newsDbProvider,
+  // ];
 
   Future<NewsApiClient> fetchClient() {
     return newsDbProvider.fetchClient();
@@ -40,12 +40,12 @@ class Repository {
   // TODO(Bodka): Iterate throught _sources and fetch top Ids
   // Implement Db source
   Future<List<int>> fetchListIds(TypeOfList type) async {
-    return _sources[1].fetchListIds(type);
+    return _sources[0].fetchListIds(type);
   }
 
   Future<ItemModel> fetchItem(int id) async {
     ItemModel item;
-    var source;
+    Source source;
 
     for (source in _sources) {
       item = await source.fetchItem(id);
@@ -54,18 +54,20 @@ class Repository {
       }
     }
 
-    for (var cache in _caches) {
-      if (cache != source) {
-        cache.addItem(item);
-      }
-    }
+    // TODO(bodka): implement caching for server
+    // for (var cache in _caches) {
+    //   if (cache != source) {
+    //     cache.addItem(item);
+    //   }
+    // }
 
     return item;
   }
 
-  clearCache() async {
-    for (var cache in _caches) {
-      await cache.clear();
-    }
-  }
+  // TODO(bodka): cleat cache
+  // clearCache() async {
+  //   for (var cache in _caches) {
+  //     await cache.clear();
+  //   }
+  // }
 }

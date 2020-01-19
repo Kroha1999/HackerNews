@@ -40,9 +40,10 @@ class StoriesBloc {
     listsIds[type].sink.add(ids);
   }
 
-  clearCache() async {
-    _repository.clearCache();
-  }
+  // TODO(bodka): clear Cache
+  // clearCache() async {
+  //   _repository.clearCache();
+  // }
 
   _itemsTransformer() {
     // cahce - previous map, id - id of event,

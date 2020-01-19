@@ -16,6 +16,7 @@ class LogInButton extends StatelessWidget {
       child: StreamBuilder(
         stream: bloc.clientState,
         builder: (context, AsyncSnapshot<bool> snapshot) {
+          // TODO(bodka): Implement unofficial api for web version
           if (!snapshot.hasData) {
             return IconButton(
               icon: Icon(Icons.account_circle),

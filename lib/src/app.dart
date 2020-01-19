@@ -27,6 +27,7 @@ class App extends StatelessWidget {
             ),
             title: 'Hacker News',
             onGenerateRoute: routes,
+            debugShowCheckedModeBanner: false,
           ),
         ),
       ),
